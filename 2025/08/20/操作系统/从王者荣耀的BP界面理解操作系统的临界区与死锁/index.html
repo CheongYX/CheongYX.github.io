@@ -1,0 +1,278 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>从王者荣耀的BP界面理解操作系统的临界区与死锁 | ReyosBlog</title><meta name="author" content="育欣"><meta name="copyright" content="育欣"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="从王者荣耀的BP界面理解操作系统的临界区与死锁 引言  “兄弟们，我打野！” 这句话一出，王者荣耀的BP（Ban&#x2F;Pick）界面瞬间变成了一个没有硝烟的战场。四个想玩法师的队友，一个不肯换的射手… 最后屏幕一灰，【投降】或【重开】的提示格外刺眼。 作为一名开发者，我在无数次“坐牢局”后突然意识到：这哪里是游戏，这分明就是操作系统课上讲的临界区、互斥和死锁的完美写照！今天，就让我们脱下装备，换上代码">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从王者荣耀的BP界面理解操作系统的临界区与死锁">
+<meta property="og:url" content="https://cheongyx.github.io/2025/08/20/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E4%BB%8E%E7%8E%8B%E8%80%85%E8%8D%A3%E8%80%80%E7%9A%84BP%E7%95%8C%E9%9D%A2%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%9A%84%E4%B8%B4%E7%95%8C%E5%8C%BA%E4%B8%8E%E6%AD%BB%E9%94%81/index.html">
+<meta property="og:site_name" content="ReyosBlog">
+<meta property="og:description" content="从王者荣耀的BP界面理解操作系统的临界区与死锁 引言  “兄弟们，我打野！” 这句话一出，王者荣耀的BP（Ban&#x2F;Pick）界面瞬间变成了一个没有硝烟的战场。四个想玩法师的队友，一个不肯换的射手… 最后屏幕一灰，【投降】或【重开】的提示格外刺眼。 作为一名开发者，我在无数次“坐牢局”后突然意识到：这哪里是游戏，这分明就是操作系统课上讲的临界区、互斥和死锁的完美写照！今天，就让我们脱下装备，换上代码">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cheongyx.github.io/Gallery/Logo/Reyos_logo_1.png">
+<meta property="article:published_time" content="2025-08-20T12:26:38.000Z">
+<meta property="article:modified_time" content="2025-08-20T12:52:41.455Z">
+<meta property="article:author" content="育欣">
+<meta property="article:tag" content="北京理工大学，人工智能，程序员">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cheongyx.github.io/Gallery/Logo/Reyos_logo_1.png"><link rel="shortcut icon" href="/Gallery/Logo/Reyos_logo_1.png"><link rel="canonical" href="https://cheongyx.github.io/2025/08/20/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E4%BB%8E%E7%8E%8B%E8%80%85%E8%8D%A3%E8%80%80%E7%9A%84BP%E7%95%8C%E9%9D%A2%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%9A%84%E4%B8%B4%E7%95%8C%E5%8C%BA%E4%B8%8E%E6%AD%BB%E9%94%81/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: false,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '从王者荣耀的BP界面理解操作系统的临界区与死锁',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2025-08-20 20:52:41'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/Gallery/Logo/Reyos_logo_1.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">4</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">3</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/Gallery/Background/Background%20(3).jpeg')"><nav id="nav"><span id="blog-info"><a href="/" title="ReyosBlog"><img class="site-icon" src="/Gallery/Logo/Reyos_logo_1.png"/><span class="site-name">ReyosBlog</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">从王者荣耀的BP界面理解操作系统的临界区与死锁</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-08-20T12:26:38.000Z" title="发表于 2025-08-20 20:26:38">2025-08-20</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-08-20T12:52:41.455Z" title="更新于 2025-08-20 20:52:41">2025-08-20</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="从王者荣耀的BP界面理解操作系统的临界区与死锁"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1>从王者荣耀的BP界面理解操作系统的临界区与死锁</h1>
+<p><strong>引言</strong></p>
+<blockquote>
+<p>“兄弟们，我打野！”<br>
+这句话一出，王者荣耀的BP（Ban/Pick）界面瞬间变成了一个没有硝烟的战场。四个想玩法师的队友，一个不肯换的射手… 最后屏幕一灰，【投降】或【重开】的提示格外刺眼。</p>
+<p>作为一名开发者，我在无数次“坐牢局”后突然意识到：这哪里是游戏，这分明就是操作系统课上讲的<strong>临界区、互斥和死锁</strong>的完美写照！今天，就让我们脱下装备，换上代码，用一场5v5的对抗来解构并发编程中最核心的概念。</p>
+</blockquote>
+<h2 id="第一章：BP界面——那个争夺唯一英雄的“临界区”"><strong>第一章：BP界面——那个争夺唯一英雄的“临界区”</strong></h2>
+<p>在操作系统中，<strong>临界区</strong>指的是一段访问<strong>共享资源</strong>的代码。这段资源有一个致命特性：<strong>一次只能被一个进程占用</strong>，否则就会引发灾难性的混乱。</p>
+<p>在我们的游戏里，这个共享资源就是<strong>英雄池</strong>。更准确地说，是池中的每一个<strong>独一无二的英雄</strong>。<code>瑶</code>、<code>韩信</code>、<code>鲁班七号</code>… 这些英雄都是唯一的资源单位。而每个玩家点击“锁定”的那一刻，就是在进入一段访问这个共享资源的<strong>临界区代码</strong>。</p>
+<p>为什么锁定英雄必须是临界区？想象一下，如果没有规则，两个玩家同时锁定了同一个英雄会发生什么？<code>瑶</code>难道能同时出现在两个楼层的选择框里吗？这显然不可能。系统必须保证“锁定”这个动作是<strong>原子性</strong>的——即要么成功完成，要么完全不发生，绝不能处于中间状态。</p>
+<p>为了理解为什么，我们必须拆解“锁定”这个动作。它远不止一个点击，在服务器后端，它是一次小心翼翼的“<strong>读-改-写</strong>”操作：</p>
+<ol>
+<li><strong>读</strong>：你的客户端向服务器查询：“<code>瑶</code>还在池子里吗？”</li>
+<li><strong>改</strong>：你的客户端基于查询结果，准备将<code>瑶</code>添加到你的队伍阵容中。</li>
+<li><strong>写</strong>：你的客户端向服务器发送指令：“把我方的<code>瑶</code>标记为已锁定！”</li>
+</ol>
+<p>如果允许多人同时进行这个操作，就会触发<strong>竞态条件</strong>，一场无声的灾难就此上演。</p>
+<hr>
+<h3 id="一场灾难：当两个人同时秒锁“瑶”"><strong>一场灾难：当两个人同时秒锁“瑶”</strong></h3>
+<p>假设没有互斥锁，进程A（一楼）和进程B（五楼）两个国服瑶玩家同时按下了锁定按钮。</p>
+<ul>
+<li><strong>时刻 T1:</strong> A和B的客户端都<strong>读取</strong>了英雄池状态，欣喜地发现：<code>瑶</code>可用！</li>
+<li><strong>时刻 T2:</strong> A和B都在本地<strong>修改</strong>数据，准备将<code>瑶</code>据为己有。</li>
+<li><strong>时刻 T3:</strong> 由于网络波动，B的<strong>写入</strong>请求比A的快了1毫秒到达服务器。服务器成功处理，将<code>瑶</code>分配给了五楼，并更新全局状态：<code>瑶[已锁定]</code>。</li>
+<li><strong>时刻 T4:</strong> A的写入请求随后到达。它完全不知道B的操作，依然基于T1时刻“<code>瑶</code>可用”的陈旧数据，向服务器发出了“一楼锁定<code>瑶</code>”的指令。</li>
+</ul>
+<p><strong>结局：</strong><br>
+服务器陷入了两难。它可能：</p>
+<ol>
+<li><strong>数据覆盖</strong>：接受A的请求，用一楼的<code>瑶</code>覆盖掉五楼的<code>瑶</code>。五楼玩家眼睁睁看着自己选好的英雄消失，被系统踢去补位。<strong>(丢失更新)</strong></li>
+<li><strong>系统崩溃</strong>：无法处理这种根本性的矛盾，导致BP界面卡死或数据错乱。<strong>(数据不一致)</strong></li>
+</ol>
+<p>无论哪种，都是毁灭性的程序错误。</p>
+<hr>
+<h3 id="正确的法则：为每个英雄加上“锁”"><strong>正确的法则：为每个英雄加上“锁”</strong></h3>
+<p>为了避免这场灾难，系统为<strong>每一个英雄</strong>都设置了一把<strong>互斥锁</strong>。</p>
+<ol>
+<li><strong>进程A（一楼）</strong> 点击锁定<code>瑶</code>。它的请求率先到达服务器。</li>
+<li>服务器立即检查<code>瑶</code>的锁。发现是自由的，于是<strong>将锁授予A</strong>，并立刻将<code>瑶</code>标记为“预选中”（或直接锁定），同时广播通知所有玩家：“一楼选择了瑶”。<strong>从此，<code>瑶</code>这把锁就被A持有了。</strong></li>
+<li><strong>进程B（五楼）</strong> 几乎同时点击锁定<code>瑶</code>。它的请求稍后到达。</li>
+<li>服务器检查<code>瑶</code>的锁，发现已被A持有，于是<strong>立刻、坚决地拒绝B的请求</strong>。B的客户端上，<code>瑶</code>的头像会立刻变灰（或被明确提示无法选择），他的锁定操作根本不会被执行。<strong>B被阻塞在了临界区之外。</strong></li>
+<li><strong>进程A</strong> 的锁定操作被安全地最终化。<code>瑶</code>正式归属一楼。</li>
+<li>服务器<strong>释放</strong><code>瑶</code>的锁（但此时释放已无关紧要，因为英雄已分配）。</li>
+<li><strong>进程B</strong> 只能从剩下的英雄中重新选择。</li>
+</ol>
+<p><strong>如果A反悔了？</strong><br>
+如果A在预选后取消了<code>瑶</code>（比如换了另一个英雄），这就相当于<strong>主动释放了锁</strong>。服务器会将<code>瑶</code>重新标记为可用，这时B就可以成功获得锁并预选她。</p>
+<hr>
+<h3 id="核心结论"><strong>核心结论</strong></h3>
+<blockquote>
+<p><strong>必须保证一个进程对共享资源（某个特定英雄）的“读-改-写”操作序列，作为一个不可分割的原子单元执行。在此过程中，通过互斥锁禁止其他任何进程访问同一资源。</strong></p>
+</blockquote>
+<p>“锁定英雄”这个看似简单的动作，是并发编程中一个最经典的临界区问题。而互斥锁，就是那位确保万无一失、维护数据最终一致性的冷酷裁判。</p>
+<h2 id="第二章：如何避免冲突——操作系统里的“队内语音”"><strong>第二章：如何避免冲突——操作系统里的“队内语音”</strong></h2>
+<p>游戏里，我们通过打字、语音来沟通：“我玩打野”、“来个辅助”。这在操作系统里叫<strong>进程间通信</strong>。</p>
+<p>而系统自身也有更底层的机制来保证互斥，比如：</p>
+<ul>
+<li><strong>互斥锁</strong>：就像一把唯一的钥匙。第一个预选打野位的玩家相当于拿到了钥匙（获取锁），其他想玩打野的玩家看到的是“位置已被占用”（申请锁失败），必须等待。</li>
+<li><strong>信号量</strong>：像一个计数器。系统规定“最多只能有2个射手位”（信号量初始值为2）。每有一个玩家选择射手，计数器就减1。当计数器为0时，下一个想选射手的玩家就会被系统阻止，直到有人放弃。</li>
+</ul>
+<p>这些机制就像游戏内的规则和沟通渠道，努力在冲突发生前化解它。</p>
+<h2 id="第三章：死锁——当五个人都拒绝退让"><strong>第三章：死锁——当五个人都拒绝退让</strong></h2>
+<p>最坏的情况还是发生了：没人辅助，没人打野，五个人都秒锁了C位，并且全都毫不退让。</p>
+<p>这一刻，<strong>死锁</strong>发生了。</p>
+<p>操作系统中的死锁有四个必要条件，我们在游戏里完美复刻了它们：</p>
+<ol>
+<li><strong>互斥条件</strong>：英雄/位置资源是独占的（一个位置只能有一个英雄）。</li>
+<li><strong>请求与保持条件</strong>：每个玩家都占着自己当前选择的英雄，同时又都在等待队友放弃他们想要的位置。</li>
+<li><strong>不剥夺条件</strong>：系统不能强制把一个玩家已经锁定的英雄给踢掉（资源不可强行剥夺）。</li>
+<li><strong>循环等待条件</strong>：玩家A在等B换，B在等C换，C又在等A换… 形成了一个痛苦的等待环。</li>
+</ol>
+<p>结局只有一个：<strong>系统检测到超时或阵容极度不合理，强制解散对局，所有人退回大厅</strong>。这在操作系统里属于<strong>死锁恢复</strong>——强行终止所有进程，回收资源。</p>
+<h2 id="第四章：不仅仅是游戏——一场哲学的延伸"><strong>第四章：不仅仅是游戏——一场哲学的延伸</strong></h2>
+<p>当我们理解了这些概念，再回头看调度算法，会发现它们仿佛是管理这个“团队”的不同哲学：</p>
+<ul>
+<li><strong>FCFS（先来先服务）</strong>：是<strong>保守主义</strong>，死板地遵守“先来后到”的规则。</li>
+<li><strong>SJF（短作业优先）</strong>：是<strong>功利主义</strong>，为了快速赢（短任务），永远让法师射手先吃线。</li>
+<li><strong>RR（时间片轮转）</strong>：是<strong>平等主义</strong>，打野轮流帮三路，谁都不吃亏。</li>
+<li><strong>Priority（优先级调度）</strong>：是<strong>精英主义/种姓制度</strong>，永远“保射手”，其他位置自生自灭。</li>
+</ul>
+<h2 id="结语"><strong>结语</strong></h2>
+<blockquote>
+<p>你看，计算机科学并非总是枯燥的0和1。它的核心思想，就隐藏在我们日常的娱乐、协作甚至冲突之中。<strong>并发控制，本质上是关于如何让一群自私的个体（进程）安全、高效、公平地共享有限资源（CPU、内存、英雄位）的艺术。</strong></p>
+<p>希望你在下一局游戏因为阵容问题而“坐牢”时，能会心一笑：“哦，我们刚刚经历了一次经典的死锁。” 然后，主动拿出你的张飞牛魔，成为那个打破<strong>循环等待</strong>、解开死锁的“系统守护进程”。</p>
+</blockquote>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://CheongYX.github.io">育欣</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://cheongyx.github.io/2025/08/20/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E4%BB%8E%E7%8E%8B%E8%80%85%E8%8D%A3%E8%80%80%E7%9A%84BP%E7%95%8C%E9%9D%A2%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%9A%84%E4%B8%B4%E7%95%8C%E5%8C%BA%E4%B8%8E%E6%AD%BB%E9%94%81/">https://cheongyx.github.io/2025/08/20/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E4%BB%8E%E7%8E%8B%E8%80%85%E8%8D%A3%E8%80%80%E7%9A%84BP%E7%95%8C%E9%9D%A2%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%9A%84%E4%B8%B4%E7%95%8C%E5%8C%BA%E4%B8%8E%E6%AD%BB%E9%94%81/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://CheongYX.github.io" target="_blank">ReyosBlog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="/Gallery/Logo/Reyos_logo_1.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2024/01/12/Flutter-%E5%AE%9E%E6%88%981/" title="Flutter 实战(1)"><img class="cover" src="/Gallery/Background/Flutter_Dart(1).jpeg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Flutter 实战(1)</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">从王者荣耀的BP界面理解操作系统的临界区与死锁</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E7%AB%A0%EF%BC%9ABP%E7%95%8C%E9%9D%A2%E2%80%94%E2%80%94%E9%82%A3%E4%B8%AA%E4%BA%89%E5%A4%BA%E5%94%AF%E4%B8%80%E8%8B%B1%E9%9B%84%E7%9A%84%E2%80%9C%E4%B8%B4%E7%95%8C%E5%8C%BA%E2%80%9D"><span class="toc-text">第一章：BP界面——那个争夺唯一英雄的“临界区”</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E5%9C%BA%E7%81%BE%E9%9A%BE%EF%BC%9A%E5%BD%93%E4%B8%A4%E4%B8%AA%E4%BA%BA%E5%90%8C%E6%97%B6%E7%A7%92%E9%94%81%E2%80%9C%E7%91%B6%E2%80%9D"><span class="toc-text">一场灾难：当两个人同时秒锁“瑶”</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%AD%A3%E7%A1%AE%E7%9A%84%E6%B3%95%E5%88%99%EF%BC%9A%E4%B8%BA%E6%AF%8F%E4%B8%AA%E8%8B%B1%E9%9B%84%E5%8A%A0%E4%B8%8A%E2%80%9C%E9%94%81%E2%80%9D"><span class="toc-text">正确的法则：为每个英雄加上“锁”</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E7%BB%93%E8%AE%BA"><span class="toc-text">核心结论</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E7%AB%A0%EF%BC%9A%E5%A6%82%E4%BD%95%E9%81%BF%E5%85%8D%E5%86%B2%E7%AA%81%E2%80%94%E2%80%94%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E9%87%8C%E7%9A%84%E2%80%9C%E9%98%9F%E5%86%85%E8%AF%AD%E9%9F%B3%E2%80%9D"><span class="toc-text">第二章：如何避免冲突——操作系统里的“队内语音”</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E7%AB%A0%EF%BC%9A%E6%AD%BB%E9%94%81%E2%80%94%E2%80%94%E5%BD%93%E4%BA%94%E4%B8%AA%E4%BA%BA%E9%83%BD%E6%8B%92%E7%BB%9D%E9%80%80%E8%AE%A9"><span class="toc-text">第三章：死锁——当五个人都拒绝退让</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E5%9B%9B%E7%AB%A0%EF%BC%9A%E4%B8%8D%E4%BB%85%E4%BB%85%E6%98%AF%E6%B8%B8%E6%88%8F%E2%80%94%E2%80%94%E4%B8%80%E5%9C%BA%E5%93%B2%E5%AD%A6%E7%9A%84%E5%BB%B6%E4%BC%B8"><span class="toc-text">第四章：不仅仅是游戏——一场哲学的延伸</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%93%E8%AF%AD"><span class="toc-text">结语</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/08/20/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E4%BB%8E%E7%8E%8B%E8%80%85%E8%8D%A3%E8%80%80%E7%9A%84BP%E7%95%8C%E9%9D%A2%E7%90%86%E8%A7%A3%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%9A%84%E4%B8%B4%E7%95%8C%E5%8C%BA%E4%B8%8E%E6%AD%BB%E9%94%81/" title="从王者荣耀的BP界面理解操作系统的临界区与死锁">从王者荣耀的BP界面理解操作系统的临界区与死锁</a><time datetime="2025-08-20T12:26:38.000Z" title="发表于 2025-08-20 20:26:38">2025-08-20</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/01/12/Flutter-%E5%AE%9E%E6%88%981/" title="Flutter 实战(1)"><img src="/Gallery/Background/Flutter_Dart(1).jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Flutter 实战(1)"/></a><div class="content"><a class="title" href="/2024/01/12/Flutter-%E5%AE%9E%E6%88%981/" title="Flutter 实战(1)">Flutter 实战(1)</a><time datetime="2024-01-12T13:50:31.000Z" title="发表于 2024-01-12 21:50:31">2024-01-12</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/12/26/Nash%20Equilibria%20SWLP%20Games/" title="On the Approximation of Nash Equilibria in Sparse Win-Lose Multi-player Games"><img src="/Gallery/Background/On%20the%20Approximation%20of%20Nash%20Equilibria%20in%20Sparse%20Win-Lose%20Multi-player%20Games.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="On the Approximation of Nash Equilibria in Sparse Win-Lose Multi-player Games"/></a><div class="content"><a class="title" href="/2023/12/26/Nash%20Equilibria%20SWLP%20Games/" title="On the Approximation of Nash Equilibria in Sparse Win-Lose Multi-player Games">On the Approximation of Nash Equilibria in Sparse Win-Lose Multi-player Games</a><time datetime="2023-12-26T03:05:09.000Z" title="发表于 2023-12-26 11:05:09">2023-12-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/12/25/Game-Theory/" title="Coursera - 1. Game Theory Introduction"><img src="/Gallery/Background/Game%20Theory%20Coursera%20(1).jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Coursera - 1. Game Theory Introduction"/></a><div class="content"><a class="title" href="/2023/12/25/Game-Theory/" title="Coursera - 1. Game Theory Introduction">Coursera - 1. Game Theory Introduction</a><time datetime="2023-12-25T13:48:38.000Z" title="发表于 2023-12-25 21:48:38">2023-12-25</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2023 - 2025 By 育欣</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">简</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>(() => {
+  const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaid.length === 0) return
+  const runMermaid = () => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+    Array.from($mermaid).forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+      const mermaidID = 'mermaid-' + index
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+
+      const renderV10 = () => {
+        renderFn.then(({svg}) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svg)
+        })
+      }
+
+      const renderV9 = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      typeof renderFn === 'string' ? renderV9(renderFn) : renderV10()
+    })
+  }
+
+  const loadMermaid = () => {
+    window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaid)
+  }
+
+  btf.addGlobalFn('themeChange', runMermaid, 'mermaid')
+
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
