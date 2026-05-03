@@ -1,7 +1,7 @@
 export const translations = {
   zh: {
     title: "终身学习者 / 跨学科探索家",
-    bio: "热爱探索未知。这里是我的数字花园，记录着我对操作系统的思考、读书心得与生活足迹。",
+    bio: "热爱探索未知。这里是我的数字花园，缝合哲学视角与心理博弈，将曾经的坎坷解构成通关规则，记录思考演化的足迹。",
     activeStatus: "目前正在积极求职",
     location: "马来西亚/远程",
     journey: "前行轨迹",
@@ -26,9 +26,9 @@ export const translations = {
   },
   en: {
     title: "Lifelong Learner / Interdisciplinary Explorer",
-    bio: "Passionate about exploring the unknown. This is my digital garden, recording my thoughts on OS, reading notes, and life footprints.",
+    bio: "Passionate about exploring the unknown. This is my digital garden, stitching philosophy with psychological play. Reconstructing past setbacks into a roadmap for mastery, tracing the footprints of an evolving mind.",
     activeStatus: "Active for Opportunities",
-    location: "Singapore / Remote",
+    location: "Malaysia/ Remote",
     journey: "Journey Timeline",
     subtitle: "My Digital Garden Timeline",
     all: "ALL",

@@ -6,6 +6,10 @@ import { translations } from '../../translations';
 
 export default function ArticleView({ currentData, item, onBack, lang, onDeselectArticle }) {
   const t = translations[lang];
+
+  // ✨ 核心修复：如果 timelineData 里没有写 content 字段，自动把 id 当作文件名去寻找 .md 文件！
+  const mainSource = currentData.content || currentData.id;
+
   return (
     <div className="animate-fade-in-up">
       <DetailHeader title={currentData.title} sub={item.layout === 'collection'} onBack={onBack} onDeselectArticle={onDeselectArticle} lang={lang} />
@@ -23,7 +27,14 @@ export default function ArticleView({ currentData, item, onBack, lang, onDeselec
           </div>
         )}
         <div className="flex-1">
-          {currentData.chapters ? currentData.chapters.map(ch => <div key={ch.id} id={ch.id} className="mb-20 scroll-mt-8"><AsyncMarkdown source={ch.content} lang={lang} /></div>) : <AsyncMarkdown source={currentData.tabs?.[0]?.content || currentData.content} lang={lang} />}
+          {currentData.chapters 
+            ? currentData.chapters.map(ch => (
+                <div key={ch.id} id={ch.id} className="mb-20 scroll-mt-8">
+                  <AsyncMarkdown source={ch.content || ch.id} lang={lang} category={currentData.category || item.category} />
+                </div>
+              )) 
+            : <AsyncMarkdown source={currentData.tabs?.[0]?.content || mainSource} lang={lang} category={currentData.category || item.category} />
+          }
         </div>
       </div>
     </div>

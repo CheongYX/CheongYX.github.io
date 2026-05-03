@@ -3,63 +3,39 @@ import { ChevronRight, ArrowLeft } from 'lucide-react';
 import { translations } from '../../translations';
 import { getCategoryStyles } from '../../utils/getCategoryStyles';
 
-import { usePostLoader } from '../../hooks/usePostLoader';
-import ProjectViewer from '../ProjectViewer';
-
-/**
- * 负责渲染具体的 Markdown 内容
- */
-function PostLoaderContainer({ item, lang, onBack }) {
-  const { postData, loading } = usePostLoader(item.id, lang);
-  
-  return (
-    <main className="w-full max-w-5xl mx-auto px-8 lg:px-16 py-16 lg:py-24 relative z-10 flex-1">
-      <button 
-        onClick={onBack}
-        className="mb-12 flex items-center gap-2 text-xs font-black uppercase tracking-widest text-slate-400 hover:text-indigo-600 transition-all group"
-      >
-        <ArrowLeft size={16} className="transition-transform group-hover:-translate-x-1" />
-        {lang === 'zh' ? '返回列表' : 'Back'}
-      </button>
-
-      {loading ? (
-        <div className="flex flex-col items-center justify-center py-20 animate-pulse">
-          <div className="w-12 h-12 border-4 border-indigo-500/20 border-t-indigo-500 rounded-full animate-spin mb-4"></div>
-          <p className="text-slate-400 font-bold text-xs uppercase tracking-widest">Scanning Garden...</p>
-        </div>
-      ) : postData ? (
-        <div className="animate-fade-in">
-          <ProjectViewer project={postData} />
-        </div>
-      ) : (
-        <div className="text-center py-20">
-          <p className="text-slate-400">Content not found in /public/posts/{lang}/{item.id}.md</p>
-        </div>
-      )}
-    </main>
-  );
-}
+// ✨ 核心修正：引入全新的 ArticleView 引擎，完美平替了旧的 ProjectViewer
+import ArticleView from '../DetailView/ArticleView';
 
 export default function AppContent({ lang, filter, setFilter, selectedItem, setSelectedItem, filteredData }) {
   const t = translations[lang];
-  // 新增状态：记录当前正在看哪个专题
+  // 你的专属状态：完美保留！
   const [activeSeries, setActiveSeries] = useState(null);
 
   // --- 情况 A: 最终层 - 显示具体的 Markdown 内容 ---
   if (selectedItem) {
     return (
-      <PostLoaderContainer 
-        item={selectedItem} 
-        lang={lang} 
-        onBack={() => { 
-          setSelectedItem(null); 
-          window.scrollTo({ top: 0, behavior: 'smooth' }); 
-        }} 
-      />
+      <main className="w-full max-w-5xl mx-auto px-8 lg:px-16 py-16 lg:py-24 relative z-10 flex-1">
+        <div className="animate-fade-in">
+          {/* ✨ 用 ArticleView 替代原来的 PostLoaderContainer，它内部自带了加载状态和 Markdown 渲染 */}
+          <ArticleView 
+            currentData={selectedItem} 
+            item={activeSeries || selectedItem} 
+            lang={lang} 
+            onBack={() => { 
+              setSelectedItem(null); 
+              window.scrollTo({ top: 0, behavior: 'smooth' }); 
+            }} 
+            onDeselectArticle={() => { 
+              setSelectedItem(null); 
+              window.scrollTo({ top: 0, behavior: 'smooth' }); 
+            }}
+          />
+        </div>
+      </main>
     );
   }
 
-  // --- 情况 B: 二级层 - 显示专题内的文章列表 ---
+  // --- 情况 B: 二级层 - 显示专题内的文章列表 (你写的漂亮 UI 回来了！) ---
   if (activeSeries) {
     return (
       <main className="w-full max-w-4xl mx-auto px-8 lg:px-16 py-16 lg:py-24 relative z-10 flex-1">
@@ -80,7 +56,6 @@ export default function AppContent({ lang, filter, setFilter, selectedItem, setS
           </div>
 
           <div className="grid gap-4">
-            {/* 🚨 核心修改：这里读取你 timelineData.js 里的 articles 数组 */}
             {activeSeries.articles?.map((article) => (
               <div 
                 key={article.id}
@@ -102,7 +77,7 @@ export default function AppContent({ lang, filter, setFilter, selectedItem, setS
     );
   }
 
-  // --- 情况 C: 初始层 - 显示主时间轴列表 ---
+  // --- 情况 C: 初始层 - 显示主时间轴列表 (你写的交互逻辑完美保留！) ---
   return (
     <main className="w-full max-w-4xl mx-auto px-8 lg:px-16 py-16 lg:py-24 relative z-10 flex-1">
       <div className="animate-fade-in-up">
@@ -131,7 +106,6 @@ export default function AppContent({ lang, filter, setFilter, selectedItem, setS
                 <div 
                   className="glass-card p-8 rounded-[2rem] transition-all duration-500 group-hover:-translate-y-1.5 cursor-pointer"
                   onClick={() => { 
-                    // 🚨 核心修改：逻辑判断如果有 articles 数组，说明是专题
                     if (item.articles && item.articles.length > 0) {
                       setActiveSeries(item);
                     } else {
@@ -150,7 +124,6 @@ export default function AppContent({ lang, filter, setFilter, selectedItem, setS
                       ))}
                     </div>
                     <span className="flex items-center gap-1 text-indigo-600 font-black text-sm group/btn">
-                      {/* 🚨 核心修改：根据是否包含 articles 动态改变按钮文字 */}
                       {item.articles && item.articles.length > 0 ? (lang === 'zh' ? '查看系列' : 'View Series') : t.explore} 
                       <ChevronRight size={16} className="transition-transform group-hover/btn:translate-x-1" />
                     </span>
