@@ -5,6 +5,7 @@ import ReactMarkdown from 'react-markdown';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import remarkMath from 'remark-math';
+import remarkGfm from 'remark-gfm'; // ✨ 新增：支持表格、删除线、任务列表
 import rehypeKatex from 'rehype-katex';
 import rehypeRaw from 'rehype-raw';
 import 'katex/dist/katex.min.css';
@@ -104,7 +105,6 @@ export default function AsyncMarkdown({ source, lang, category }) {
     }
 
     // ✨ 终极修复 1：兜底占位。如果当前 Tab 完全没有标题，强行塞入一个带有当前 Tab 名字的虚拟标题。
-    // 这样能够保证发出去的目录数组绝对不为空，左侧就能死死锁定在深色的 TOC 状态！
     if (headings.length === 0) {
       headings.push({
         level: 2,
@@ -118,12 +118,10 @@ export default function AsyncMarkdown({ source, lang, category }) {
     }, 50);
     
     // ✨ 终极修复 2：当切换 Tab 时，只取消旧的定时器，绝对不要发送 `[]` 广播！
-    // 这消除了切换 Tab 时左侧面板一闪而过的头像。
     return () => clearTimeout(timer);
   }, [tabs, activeTabIdx]);
 
-  // ✨ 终极修复 3：新增独立的生命周期钩子。
-  // 只有当用户点击“返回主页”彻底退出整篇文章（组件卸载）时，才发出 `[]` 召唤照片回归。
+  // ✨ 终极修复 3：退出整篇文章才召唤照片回归
   useEffect(() => {
     return () => {
       window.dispatchEvent(new CustomEvent('update-toc', { detail: [] }));
@@ -242,13 +240,13 @@ export default function AsyncMarkdown({ source, lang, category }) {
       )}
 
       {/* 📝 当前显示的内容 */}
+      {/* ✨ 新增了 prose-table 相关的表格美化样式 */}
       {tabs[activeTabIdx] && (
-        <div className="prose prose-slate prose-indigo max-w-none prose-headings:font-black prose-p:leading-relaxed prose-a:font-bold prose-img:rounded-2xl prose-li:marker:text-indigo-500">
+        <div className="prose prose-slate prose-indigo max-w-none prose-headings:font-black prose-p:leading-relaxed prose-a:font-bold prose-img:rounded-2xl prose-li:marker:text-indigo-500 prose-table:w-full prose-th:bg-slate-50 prose-th:p-3 prose-td:p-3 prose-tr:border-b prose-tr:border-slate-200">
           <ReactMarkdown
-            remarkPlugins={[remarkMath]}
+            remarkPlugins={[remarkMath, remarkGfm]} // ✨ 注入 remarkGfm 以支持表格
             rehypePlugins={[rehypeKatex, rehypeRaw]}
             components={{
-              // 将标题替换为带有 ID 的自定义组件
               h1: (props) => <Heading level={1} {...props} />,
               h2: (props) => <Heading level={2} {...props} />,
               h3: (props) => <Heading level={3} {...props} />,

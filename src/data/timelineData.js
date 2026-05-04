@@ -31,12 +31,12 @@ export const getTimelineData = (lang) => [
     tags: ['Philosophy']
   },
     {
-    id: "esp32-weather-station", 
-    date: '2026.05', 
-    title: lang === 'zh' ? 'ESP32 智能环境监测站' : 'test1',
+    id: "java_project_2022", 
+    date: '2022.01', 
+    title: lang === 'zh' ? '基于 Java 与 SQLite 的蛋白质序列属性管理系统实现' : 'test1',
     category: 'project', 
     layout: 'tabs', 
-    description: lang === 'zh' ? '塔勒布关于责任与决策的思考。' : 'Taleb\'s insights on accountability and decision making.',
-    tags: ['EmbeddedSystem']
+    description: lang === 'zh' ? '深入解析如何利用 Java (J2SE-1.5) 与 SQLite3 构建稳健的蛋白质序列属性管理系统。本文不仅涵盖了数据入库、多维检索与分页逻辑，更重点讨论了在处理真实科学数据时的容错设计与工程健壮性。' : 'Taleb\'s insights on accountability and decision making.',
+    tags: ['Java','SQLite']
   }
 ];

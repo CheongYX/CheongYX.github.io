@@ -40,9 +40,10 @@ Make sure you have Node.js installed on your machine.
 
 Assuming you have cloned the code, run the following in your terminal at the project root:
 
+```text
 npm install
 npm run dev
-
+```
 
 Open your browser and visit http://localhost:5173 to preview.
 
@@ -54,6 +55,7 @@ The biggest highlight of this project is the minimalist configuration. You only 
 
 Put your .md files in the public/posts directory, categorized by language:
 
+```text
 public/
 └── posts/
     ├── zh/              # Chinese Articles
@@ -62,7 +64,7 @@ public/
     └── en/              # English Articles
         ├── os-deadlock.md
         └── my-robot.md
-
+```
 
 2. Configure timelineData.js
 
@@ -72,6 +74,7 @@ Scenario A: Publishing a Normal Article / Series Collection
 
 If you want to publish a series with a floating TOC on the left:
 
+```css
 {
   id: 1, 
   date: '2026.05', 
@@ -89,7 +92,7 @@ If you want to publish a series with a floating TOC on the left:
     }
   ]
 }
-
+```
 
 Scenario B: Publishing a Project (Triggers Auto-Tabs!)
 
@@ -97,6 +100,7 @@ When your category is set to 'project', our auto-slicing magic activates.
 
 Step 1: Configure in timelineData.js
 
+```css
 {
   id: 2, 
   date: '2026.06', 
@@ -106,7 +110,7 @@ Step 1: Configure in timelineData.js
   tags: ['Hardware', 'IoT'],
   content: 'my-robot' // Your markdown filename
 }
-
+```
 
 Step 2: Write slicing directives in your Markdown
 
@@ -145,18 +149,28 @@ Social Links & Avatar: Open src/components/AppLayout/LeftPanel.jsx to change the
 ☁️ Deploy to GitHub Pages
 
 Add this property to the root of your package.json:
+
+```text
 "homepage": "https://<your-username>.github.io/<your-repo-name>",
+```
 
 Install gh-pages via terminal:
+
+```text
 npm install gh-pages --save-dev
+```
 
 Update the scripts in package.json:
 
+```json
 "scripts": {
   "predeploy": "npm run build",
   "deploy": "gh-pages -d dist"
 }
-
+```
 
 Run the deployment command:
+
+```text
 npm run deploy
+```
