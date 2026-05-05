@@ -19,7 +19,7 @@ export default function LayoutShell({ lang, isEyeCareMode, children }) {
         
         {children}
 
-        <footer className="w-full text-center py-12 text-slate-300 text-[10px] font-black tracking-[0.2em] uppercase relative z-10">© {new Date().getFullYear()} CYX · {t.location}</footer>
+        <footer className="w-full text-center py-12 text-slate-300 text-[10px] font-black tracking-[0.2em] uppercase relative z-10">© {new Date().getFullYear()} CYX · All rights reserved.</footer>
       </div>
     </div>
   );
