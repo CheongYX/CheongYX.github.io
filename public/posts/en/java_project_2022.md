@@ -94,7 +94,7 @@ The core aesthetic of this architecture lies in its **decoupling**, perfectly em
 - **Interaction Layer**: Responsible only for "speaking" (rendering results) and "listening" (parsing intent).
 - **DB Operation Layer**: Focuses on "calculating" (statistical analysis) and "recording" (persistent storage).
 
-<!-- tabs: Problem Solving -->
+<!-- tab: Problem Solving -->
 
 ## 3. Engineering Challenges and Robustness Solutions (Problem Solving)
 
@@ -122,7 +122,7 @@ I solved the following key challenges through pure software engineering thinking
   </a>
 </div>
 
-<!-- tabs: Final Results -->
+<!-- tab: Final Results -->
 
 ## 4. Conclusion and Interdisciplinary Reflection
 
