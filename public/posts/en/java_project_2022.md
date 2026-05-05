@@ -35,6 +35,8 @@ The system design follows core **Object-Oriented Programming (OOP) principles**,
 
 This system implements a complete closed loop from raw file parsing to structured data analysis through modular design.
 
+![FlowChart](/images/java_project_2022/LogicFlowChart.png)
+
 ### 2.1 Structured Data Processing: Ingestion and Query
 
 - **Structured Data Ingestion**: The system parses protein sequence files in batches through the `handleAppend` method in `Main.java`. Its core logic lies in **fault-tolerant parsing**: the system pre-validates file suffixes during reading to ensure only legal formats enter the processing stream and performs automatic completion for sequences with incomplete information to prevent the program from crashing due to local data corruption.

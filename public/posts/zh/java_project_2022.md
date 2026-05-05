@@ -34,6 +34,8 @@ tags: Java, SQLite
 
 本系统通过模块化设计，实现了从原始文件解析到结构化数据分析的完整闭环。
 
+![FlowChart](/images/java_project_2022/LogicFlowChart.png)
+
 ### 2.1 结构化数据处理：摄取与分析 (Ingestion & Query)
 
 - **结构化数据摄取 (Ingestion)**：系统通过 `Main.java` 中的 `handleAppend` 方法批量解析蛋白质序列文件 。其核心逻辑在于**容错解析**：系统在读取时会预校验文件后缀，确保只有合法格式进入处理流，并针对信息不完整的序列进行自动补全，防止程序因局部数据坏点而崩溃 。  
