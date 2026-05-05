@@ -173,7 +173,8 @@ export default function AsyncMarkdown({ source, lang, category }) {
         .replace(/<summary[^>]*>[\s\S]*?<\/summary>/gi, '$&\n\n')
         .replace(/<\/details>/gi, '\n\n$&\n\n');
       
-      const tabRegex = /<!--\s*tab:\s*([^\s>]+)\s*-->/gi;
+      // 🚀 只改了这里：正则支持带空格的英文名！
+      const tabRegex = /<!--\s*tab:\s*(.+?)\s*-->/gi;
       
       // 如果分类是 project，并且含有 tab 指令，则执行切片魔法
       if (category === 'project' && tabRegex.test(cleanBody)) {
@@ -181,7 +182,9 @@ export default function AsyncMarkdown({ source, lang, category }) {
         const rawTabs = []; 
         let match; 
         let lastIndex = 0; 
-        let currentTitle = "通用"; 
+        
+        // 🚀 只改了这里：双语默认标题！
+        let currentTitle = lang === 'en' ? "Intro" : "通用"; 
         
         while ((match = tabRegex.exec(cleanBody)) !== null) {
           const tabContent = cleanBody.slice(lastIndex, match.index).trim();

@@ -1,5 +1,5 @@
 ---
-title: 基于 Java 与 SQLite 的蛋白质序列属性管理系统实现
+title: Implementation of a Protein Sequence Attribute Management System Based on Java and SQLite
 layout: project
 date: "2022-01-09"
 catogories: Java
@@ -7,7 +7,7 @@ tags: Java, SQLite
 ---
 
 
-<!-- tabs: Project Background -->
+<!-- tab: Project Background -->
 ## 1. Introduction: Project Background and System Vision
 
 ### 1.1 Research Background
@@ -29,7 +29,7 @@ The system design follows core **Object-Oriented Programming (OOP) principles**,
 * **Interaction Module (Interaction Module / View-Controller)**: Responsible for parsing user commands (cmd/powershell terminal), validating file formats, and visually presenting results in a tabular format.
 * **Database Operation Module (DB Operation Module / Model)**: Based on the **J2SE-1.5** standard, it interacts with the lightweight, embedded **SQLite3** engine through the **sqlite-jdbc-3.36.0.3.jar** driver to achieve low-latency data persistence management.
 
-<!-- tabs: Technical Implementation -->
+<!-- tab: Technical Implementation -->
 
 ## 2. Core Implementation Logic and Business Workflow
 

@@ -33,10 +33,10 @@ export const getTimelineData = (lang) => [
     {
     id: "java_project_2022", 
     date: '2022.01', 
-    title: lang === 'zh' ? '基于 Java 与 SQLite 的蛋白质序列属性管理系统实现' : 'test1',
+    title: lang === 'zh' ? '基于 Java 与 SQLite 的蛋白质序列属性管理系统实现' : 'Implementation of a Protein Sequence Attribute Management System Based on Java and SQLite',
     category: 'project', 
     layout: 'tabs', 
-    description: lang === 'zh' ? '深入解析如何利用 Java (J2SE-1.5) 与 SQLite3 构建稳健的蛋白质序列属性管理系统。本文不仅涵盖了数据入库、多维检索与分页逻辑，更重点讨论了在处理真实科学数据时的容错设计与工程健壮性。' : 'Taleb\'s insights on accountability and decision making.',
+    description: lang === 'zh' ? '基于 Java 与 SQLite 的蛋白质序列属性管理系统实现解析，聚焦面向对象架构下的模块解耦设计，并探讨异构科学数据处理中的容错补全、分页调度与统计分析。' : 'An analysis of a Protein Sequence Attribute Management System built with Java and SQLite, focusing on modular OOP design, fault-tolerant handling of heterogeneous scientific data, pagination scheduling, and statistical analysis.',
     tags: ['Java','SQLite']
   }
 ];
