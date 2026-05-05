@@ -40,7 +40,7 @@ Make sure you have Node.js installed on your machine.
 
 Assuming you have cloned the code, run the following in your terminal at the project root:
 
-```text
+```bash
 npm install
 npm run dev
 ```
@@ -133,7 +133,6 @@ console.log("Hello ESP32");
 <!-- tab: Final Result -->
 This is the third page. Mermaid charts are fully supported!
 
-
 Save it, and the engine will automatically render this article into an advanced UI with top Tab navigation—no need to split it into multiple files!
 
 ⚙️ Personalization
@@ -150,13 +149,13 @@ Social Links & Avatar: Open src/components/AppLayout/LeftPanel.jsx to change the
 
 Add this property to the root of your package.json:
 
-```text
+```bash
 "homepage": "https://<your-username>.github.io/<your-repo-name>",
 ```
 
 Install gh-pages via terminal:
 
-```text
+```bash
 npm install gh-pages --save-dev
 ```
 
