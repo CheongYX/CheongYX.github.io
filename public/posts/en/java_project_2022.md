@@ -7,7 +7,7 @@ tags: Java, SQLite
 ---
 
 
-<!-- tab: Project Background -->
+<!-- tabs: Project Background -->
 ## 1. Introduction: Project Background and System Vision
 
 ### 1.1 Research Background
@@ -29,7 +29,7 @@ The system design follows core **Object-Oriented Programming (OOP) principles**,
 * **Interaction Module (Interaction Module / View-Controller)**: Responsible for parsing user commands (cmd/powershell terminal), validating file formats, and visually presenting results in a tabular format.
 * **Database Operation Module (DB Operation Module / Model)**: Based on the **J2SE-1.5** standard, it interacts with the lightweight, embedded **SQLite3** engine through the **sqlite-jdbc-3.36.0.3.jar** driver to achieve low-latency data persistence management.
 
-<!-- tab: Technical Implementation -->
+<!-- tabs: Technical Implementation -->
 
 ## 2. Core Implementation Logic and Business Workflow
 
@@ -94,7 +94,7 @@ The core aesthetic of this architecture lies in its **decoupling**, perfectly em
 - **Interaction Layer**: Responsible only for "speaking" (rendering results) and "listening" (parsing intent).
 - **DB Operation Layer**: Focuses on "calculating" (statistical analysis) and "recording" (persistent storage).
 
-<!-- tab: Problem Solving -->
+<!-- tabs: Problem Solving -->
 
 ## 3. Engineering Challenges and Robustness Solutions (Problem Solving)
 
@@ -122,7 +122,7 @@ I solved the following key challenges through pure software engineering thinking
   </a>
 </div>
 
-<!-- tab: Final Results -->
+<!-- tabs: Final Results -->
 
 ## 4. Conclusion and Interdisciplinary Reflection
 
