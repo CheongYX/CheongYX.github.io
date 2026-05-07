@@ -37,7 +37,7 @@ export const getTimelineData = (lang) => [
     category: 'project', 
     layout: 'tabs', 
     description: lang === 'zh' ? '本项目完整解构了一个基于高性能全栈架构的中国象棋AI，实现了从传统启发式剪枝搜索到CNN神经网络评估的技术跨越。文章不仅硬核攻克了分布式状态同步难题，更通过Grad-CAM热力图与可视化决策树，带您直观透视博弈大脑底层“算力”与“直觉”的运作逻辑。' : 'Project fully deconstructs a high-performance, full-stack Chinese Chess AI, showcasing the technical leap from traditional heuristic pruning search to Convolutional Neural Network (CNN) evaluation. Beyond rigorously tackling the complexities of distributed state synchronization, it utilizes Grad-CAM heatmaps and visualized decision trees to provide an intuitive look into how the underlying "computing power" and "intuition" of the gaming brain truly operate.',
-    tags: ['FullStack','Minmax', 'Alpha-Beta Pruning', 'Monte Carlo Tree Search (MCTS)', 'Zobrist Hashing']
+    tags: ['FullStack','Minimax', 'Alpha-Beta Pruning', 'Monte Carlo Tree Search (MCTS)', 'Zobrist Hashing']
   },
     {
     id: "java_project_2022", 

@@ -3,7 +3,7 @@ title: 中国象棋博弈系统的混合架构实现
 layout: project
 date: "2022-08-22"
 catogories: Python
-tags: React, Vite, TailwindCSS, Minmax, Alpha-Beta Pruning, Monte Carlo Tree Search (MCTS), Zobrist Hashing
+tags: React, Vite, TailwindCSS, Minimax, Alpha-Beta Pruning, Monte Carlo Tree Search (MCTS), Zobrist Hashing
 ---
 
 <!-- tab: 项目背景 -->
