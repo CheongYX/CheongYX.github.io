@@ -300,14 +300,29 @@ export default function AsyncMarkdown({ source, lang, category }) {
                         <div className="w-16"></div> 
                       </div>
                       
-                      <SyntaxHighlighter 
-                        style={vscDarkPlus} 
-                        language={hlLang} 
+                      <SyntaxHighlighter
+                        style={vscDarkPlus}
+                        language={hlLang}
                         PreTag="div" 
-                        customStyle={{ margin: 0, padding: '1.25rem', background: '#1e1e1e' }}
+                        customStyle={{
+                          margin: 0, 
+                          padding: '1.25rem', 
+                          background: '#1e1e1e',
+                          whiteSpace: 'pre-wrap', 
+                          wordBreak: 'break-word' 
+                        }}
                         className="text-sm font-mono leading-relaxed" 
+                        wrapLongLines={true}
+                        showLineNumbers={true}
+                        lineNumberStyle={{ minWidth: '2.5em', paddingRight: '1em', color: '#6e7681', textAlign: 'right' }}
+                        codeTagProps={{ 
+                          style: { 
+                            whiteSpace: 'pre-wrap', /* ✨ 给内层的 code 也上一把锁 */
+                            wordBreak: 'break-word' 
+                          }
+                        }}
                         {...props}
-                      >
+                        >
                         {codeText}
                       </SyntaxHighlighter>
                     </div>

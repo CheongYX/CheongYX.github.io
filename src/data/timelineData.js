@@ -30,6 +30,15 @@ export const getTimelineData = (lang) => [
     description: lang === 'zh' ? '塔勒布关于责任与决策的思考。' : 'Taleb\'s insights on accountability and decision making.',
     tags: ['Philosophy']
   },
+      {
+    id: "chinese_chess_ai_2022", 
+    date: '2022.08', 
+    title: lang === 'zh' ? '中国象棋博弈系统的混合架构实现' : 'Hybrid Architecture Implementation of Chinese Chess AI Game System',
+    category: 'project', 
+    layout: 'tabs', 
+    description: lang === 'zh' ? '基于 Java 与 SQLite 的蛋白质序列属性管理系统实现解析，聚焦面向对象架构下的模块解耦设计，并探讨异构科学数据处理中的容错补全、分页调度与统计分析。' : '-',
+    tags: ['Python','React','FastAPI']
+  },
     {
     id: "java_project_2022", 
     date: '2022.01', 
