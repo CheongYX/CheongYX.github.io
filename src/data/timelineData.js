@@ -7,17 +7,28 @@ export const getTimelineData = (lang) => [
     layout: 'collection', // 你原本的标记，非常棒
     description: lang === 'zh' ? '一场摒弃传统死记硬背、通过游戏机制与社会博弈逻辑完成的系统级通关，证明了理解底层逻辑的路径不止一条。' : 'Winning through game mechanics rather than memorization proves there are diverse routes to mastering fundamental logic.',
     tags: ['OS', 'Learning'],
-    // 这里使用你的 articles！
     articles: [
       { 
-        id: 'os-deadlock-gaming', // 🚨 核心：这个 ID 必须等于 os-deadlock-gaming.md
+        id: 'os-deadlock-gaming', 
         title: lang === 'zh' ? '从王者荣耀的BP界面理解操作系统的临界区与死锁' : 'Deadlocks via MOBA Drafts', 
         date: '2025-08-20'
       },
       { 
-        id: 'os-try2', // 🚨 核心：这个 ID 必须等于 os-deadlock-gaming.md
-        title: lang === 'zh' ? 'testing123' : 'testing123', 
+        id: 'os_memory_management_2025', 
+        title: lang === 'zh' ? '从图书馆借书聊内存管理：页式、段式与快表' : 'Library Analogy for Memory Management: Paging, Segmentation & TLB', 
         date: '2025-08-20'
+      },
+      {
+        id: 'os_psych_deadlock_2025', 
+        title: lang === 'zh' ? '关系中的“死锁”与“调试”：当心理学遇上操作系统' : 'Deadlocks and Debugging in Relationships: When Psychology Meets OS', 
+        date: '2025-08-22'
+      },
+      { 
+        id: 'linux_inode_concept_2025', 
+        title: lang === 'zh' ? '终于搞懂 inode 了：一篇关于仓库、钥匙与储物柜的故事' : 'testing123', 
+        date: '2025-12-09',
+        description: lang == 'zh'?'一篇关于仓库、钥匙与储物柜的故事，用生活中的仓库管理员类比，轻松搞懂 Linux 文件系统中的 inode 机制。':'-',
+        tags: ['Linux']
       }
     ]
   },

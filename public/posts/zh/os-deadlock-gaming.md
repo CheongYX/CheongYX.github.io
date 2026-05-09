@@ -3,8 +3,6 @@ title: 从王者荣耀的BP界面理解操作系统的临界区与死锁
 date: 2025-08-20 20:26:38
 layout: book
 categories: 操作系统
-# cover: /Gallery/Background/OS1.jpeg
-# description:
 ---
 
 **引言**
