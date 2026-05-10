@@ -42,7 +42,7 @@ export const getTimelineData = (lang) => [
     ]
   },
   {
-    id: "GoodMorning,_Monster", 
+    id: "GoodMorning_Monster", 
     date: '2026.04', 
     title: lang === 'zh' ? '课外阅读：《早安，怪物》' : 'Reading: Skin in the Game',
     category: 'reading', 
