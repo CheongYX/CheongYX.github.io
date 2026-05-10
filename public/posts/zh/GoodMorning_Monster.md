@@ -5,7 +5,7 @@ tags:
 categories: [2026书单]
 ---
 
-![《早安，怪物》](/public/images/books_cover/zaoanguaiwu.png)
+<img src="/images/books_cover/zaoanguaiwu.png" width="40%" style="border-radius: 8px; border: 1px solid #e2e8f0;" />
 
 ## ——从劳拉、彼得、丹尼与艾伦娜身上，看见关系、创伤与人格如何形成
 
