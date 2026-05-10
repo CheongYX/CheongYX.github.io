@@ -1,4 +1,13 @@
 export const getTimelineData = (lang) => [
+    {
+    id: "zenith_framework_2026", 
+    date: '2026.05', 
+    title: lang === 'zh' ? 'Zenith: 个人作品集与博客渲染框架' : 'Zenith: Personal Portfolio & Blog Rendering Framework',
+    category: 'project', 
+    layout: 'tabs', 
+    description: lang === 'zh' ? '一个基于 React 构建的 Markdown 渲染框架，实现了文档的多标签页动态切片，并修复了移动端代码块与图片的响应式布局溢出问题。' : 'A React-based Markdown rendering framework that implements dynamic multi-tab slicing and resolves responsive layout overflow issues for code blocks and images on mobile devices.',
+    tags: ['React', 'Vite', 'Tailwind CSS', 'Markdown', 'Framer Motion']
+  },
   {
     id: "os-series", // 建议把 id 改成字符串，避免潜在的类型错误
     date: '2025.08', 
@@ -35,13 +44,13 @@ export const getTimelineData = (lang) => [
   {
     id: "reading-skin", 
     date: '2026.04', 
-    title: lang === 'zh' ? '课外阅读：《非对称风险》' : 'Reading: Skin in the Game',
+    title: lang === 'zh' ? '课外阅读：《早安，怪物》' : 'Reading: Skin in the Game',
     category: 'reading', 
     layout: 'tabs', 
-    description: lang === 'zh' ? '塔勒布关于责任与决策的思考。' : 'Taleb\'s insights on accountability and decision making.',
+    description: lang === 'zh' ? '《早安，怪物》-[加]凯瑟琳·吉尔迪纳 / 木草草 译 。认知愿意相信自己愿意相信的，所以我总是在思考如何才不会成为认知的囚徒。' : 'Taleb\'s insights on accountability and decision making.',
     tags: ['Philosophy']
   },
-      {
+  {
     id: "chinese_chess_ai_2022", 
     date: '2022.08', 
     title: lang === 'zh' ? '中国象棋博弈系统的混合架构实现' : 'Hybrid Architecture Implementation of Chinese Chess AI Game System',
