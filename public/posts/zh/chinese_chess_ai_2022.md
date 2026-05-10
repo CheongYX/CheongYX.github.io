@@ -133,7 +133,7 @@ const handleSquareClick = async (x, y) => {
   } catch (error) {
     setBoard(prevBoardState); // 网络异常回滚
   }
-};
+}
 ```
 
 **通信层实现**：系统采用了基于 **FastAPI** 的 **RESTful 架构**。前端 React 应用通过异步 **fetch** 机制，将玩家的操作序列化为 **JSON** 报文，发送至后端的 `/api/move` 路由。后端逻辑核在处理完 A-B 剪枝搜索后，将 AI 的响应封装为标准的响应对象返回。这种架构不仅实现了 UI 与逻辑的解耦，也为后续接入 **云端 GPU 集群** 进行深度学习推理（Phase 3）铺平了道路。

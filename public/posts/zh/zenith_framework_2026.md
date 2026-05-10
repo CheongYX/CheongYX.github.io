@@ -162,15 +162,9 @@ cleanBody = cleanBody
 
 <!-- tab: 最终成果 -->
 
-#Zenith 框架目前已稳定运行，并成功承载了包括前后端全栈应用、嵌入式硬件记录等多个维度的复杂项目文档。通过将布局逻辑与内容创作解耦，该框架大幅降低了后续维护技术文档的排版成本。
-
-#### 媒体展示建议 (留待替换)
-
-*(提示：你可以使用系统规范的 Flex 模板，在此处插入以下素材来直观展示框架能力)*
+Zenith 框架目前已稳定运行，并成功承载了包括前后端全栈应用、嵌入式硬件记录等多个维度的复杂项目文档。通过将布局逻辑与内容创作解耦，该框架大幅降低了后续维护技术文档的排版成本。
 
 1. **移动端与桌面端对比图**：
-
-   准备两张截图，分别展示同一个页面在电脑宽屏和手机窄屏下的显示效果，证明框架的自适应能力。
 
 ```html
 <div style="display: flex; flex-wrap: wrap; gap: 16px; width: 100%;">
@@ -185,9 +179,13 @@ cleanBody = cleanBody
 </div>
 ```
 
-1. **交互演示视频 (GIF)**：
+电脑宽屏显示效果
+![Computer_sight](/images/Zenith_2026/Computer_sight.png)
 
-   录制一段简短的屏幕录像并转为 GIF，展示用户点击不同 Tab 时，内容瞬间切换而页面不发生重载的流畅过程。
+手机窄屏显示效果
+<video src="/images/Zenith_2026/Phone_sight.mp4" autoplay loop muted playsinline width="30%" class="rounded-xl"></video>
+
+1. **交互演示视频 (GIF)**：
 
 ```html
 <div align="center">
@@ -195,6 +193,8 @@ cleanBody = cleanBody
   <p align="center" style="font-size: 0.9em; color: #64748b;">单页面多标签无缝切换</p>
 </div>
 ```
+
+<video src="/images/Zenith_2026/Tab_Shifting.mp4" autoplay loop muted playsinline width="100%" class="rounded-xl"></video>
 
 1. **高级排版特写**：
 
@@ -206,3 +206,5 @@ cleanBody = cleanBody
   <p align="center" style="font-size: 0.9em; color: #64748b;">复杂公式与代码块渲染精度</p>
 </div>
 ```
+
+![LaTex](/public/images/Zenith_2026/latex_show.png)
