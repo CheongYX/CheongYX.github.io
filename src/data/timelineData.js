@@ -9,11 +9,20 @@ export const getTimelineData = (lang) => [
     tags: ['React', 'Vite', 'Tailwind CSS', 'Markdown', 'Framer Motion']
   },
   {
-    id: "os-series", // 建议把 id 改成字符串，避免潜在的类型错误
+    id: "GoodMorning_Monster", 
+    date: '2026.04', 
+    title: lang === 'zh' ? '课外阅读：《早安，怪物》' : 'Reading: Skin in the Game',
+    category: 'reading', 
+    layout: 'tabs', 
+    description: lang === 'zh' ? '《早安，怪物》-[加]凯瑟琳·吉尔迪纳 / 木草草 译 。认知愿意相信自己愿意相信的，所以我总是在思考如何才不会成为认知的囚徒。' : 'Taleb\'s insights on accountability and decision making.',
+    tags: ['Philosophy']
+  },
+  {
+    id: "os-series", 
     date: '2025.08', 
     title: lang === 'zh' ? '操作系统：跨学科解构专栏' : 'Operating System: Column',
     category: 'learning', 
-    layout: 'collection', // 你原本的标记，非常棒
+    layout: 'collection',
     description: lang === 'zh' ? '一场摒弃传统死记硬背、通过游戏机制与社会博弈逻辑完成的系统级通关，证明了理解底层逻辑的路径不止一条。' : 'Winning through game mechanics rather than memorization proves there are diverse routes to mastering fundamental logic.',
     tags: ['OS', 'Learning'],
     articles: [
@@ -32,23 +41,49 @@ export const getTimelineData = (lang) => [
         title: lang === 'zh' ? '关系中的“死锁”与“调试”：当心理学遇上操作系统' : 'Deadlocks and Debugging in Relationships: When Psychology Meets OS', 
         date: '2025-08-22'
       },
+      {
+        id: 'os_dining_philosophers_2025', 
+        title: lang === 'zh' ? '哲学家进餐问题：四大破局智慧与死锁解析' : 'The Dining Philosophers Problem: Deadlock Analysis and Four Solutions', 
+        date: '2025-09-01'
+      },
+      {
+        id: 'os_hotel_analogy_2025', 
+        title: lang === 'zh' ? '在酒店里理解操作系统的四大特性' : 'Understanding OS Characteristics Through a Hotel Analogy', 
+        date: '2025-09-03'
+      },
+      {
+        id: 'os_social_metaphor_2025', 
+        title: lang === 'zh' ? '操作系统的世界，也像我们的世界' : 'The OS World: A Reflection of Our Own', 
+        date: '2025-09-12'
+      },
+      {
+        id: 'os_linux_memory_management_2025', 
+        title: lang === 'zh' ? '深入理解Linux内存管理：从进程地址空间到物理页框' : 'Deep Dive into Linux Memory Management: From Address Space to Page Frames', 
+        date: '2025-09-29'
+      },
+      {
+        id: 'os_filesystem_treasure_2025', 
+        title: lang === 'zh' ? '彻底理解文件系统：四大宝藏存储方案完全指南' : 'Understanding File Systems: Four Treasure Storage Schemes', 
+        date: '2025-10-29'
+      },
       { 
-        id: 'linux_inode_concept_2025', 
+        id: 'os_linux_inode_concept_2025', 
         title: lang === 'zh' ? '终于搞懂 inode 了：一篇关于仓库、钥匙与储物柜的故事' : 'testing123', 
         date: '2025-12-09',
         description: lang == 'zh'?'一篇关于仓库、钥匙与储物柜的故事，用生活中的仓库管理员类比，轻松搞懂 Linux 文件系统中的 inode 机制。':'-',
         tags: ['Linux']
+      },
+      {
+        id: 'os_linux_excel_search_2025', 
+        title: lang === 'zh' ? '用Excel学Linux：小白也能懂的搜索原理' : 'Learning Linux through Excel: Search Principles for Beginners', 
+        date: '2025-12-11'
+      },
+      {
+        id: 'os_windows_kernel_restaurant_2026', 
+        title: lang === 'zh' ? '当操作系统成为一家餐厅：Windows内核的趣味比喻' : 'When OS Becomes a Restaurant: A Fun Analogy for Windows Kernel', 
+        date: '2026-01-04'
       }
     ]
-  },
-  {
-    id: "GoodMorning_Monster", 
-    date: '2026.04', 
-    title: lang === 'zh' ? '课外阅读：《早安，怪物》' : 'Reading: Skin in the Game',
-    category: 'reading', 
-    layout: 'tabs', 
-    description: lang === 'zh' ? '《早安，怪物》-[加]凯瑟琳·吉尔迪纳 / 木草草 译 。认知愿意相信自己愿意相信的，所以我总是在思考如何才不会成为认知的囚徒。' : 'Taleb\'s insights on accountability and decision making.',
-    tags: ['Philosophy']
   },
   {
     id: "chinese_chess_ai_2022", 

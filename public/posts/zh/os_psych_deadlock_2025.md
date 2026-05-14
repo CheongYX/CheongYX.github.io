@@ -1,7 +1,6 @@
 ---
 title: 关系中的“死锁”与“调试”：当心理学遇上操作系统
 date: 2025-08-22 16:27:16
-tags: [心理学, PV操作, 野生AI哲学家]
 categories: 操作系统
 layout: book
 ---
