@@ -38,11 +38,11 @@ const tabRegex = /<!--\s*tab:\s*(.+?)\s*-->/gi;
 
 **Slicing Execution Flow:**
 
-1.  **Pointer Traversal**: The regex engine continuously searches the document for `<!-- tab: [Name] -->` markers using the `exec()` method. Within the loop, it tracks the end position of the current matched segment by recording the `lastIndex` property.
+1.  **Pointer Traversal**: The regex engine continuously searches the document for `< !-- tab: [Name] -- >` markers using the `exec()` method. Within the loop, it tracks the end position of the current matched segment by recording the `lastIndex` property.
 2.  **Block Interception**: For each match, the system uses `slice()` to extract the text content between the previous `lastIndex` and the current match's `index`, stripping excess carriage returns and whitespace using `trim()`.
 3.  **State Packaging**: The extracted plain text is assembled with the current tab name into a JavaScript object `{ title: currentTitle, content: tabContent }`, which is then pushed into a predefined `rawTabs` array.
 4.  **Fallback Handling Mechanism**:
-    -   **Leading Orphan Node Handling**: If introductory paragraphs at the beginning of the document are not wrapped by any `<!-- tab: xxx -->` declaration, the system injects a default title based on the locale. Using a ternary expression like `lang === 'en' ? "Intro" : "Introduction"` ensures the first block always has a valid state ownership.
+    -   **Leading Orphan Node Handling**: If introductory paragraphs at the beginning of the document are not wrapped by any `< !-- tab: xxx -- >` declaration, the system injects a default title based on the locale. Using a ternary expression like `lang === 'en' ? "Intro" : "Introduction"` ensures the first block always has a valid state ownership.
     -   **Trailing Interception Compensation**: After the loop ends, the system checks for any remaining text from the last match to the end of the file; if not empty, it is pushed onto the stack as the last tab's content.
 
 Finally, via `setTabs(rawTabs)`, the one-dimensional Markdown text is transformed into a structured React state tree. The view layer can then achieve O(1) complexity DOM replacement using just the `activeTabIdx` index, realizing the lightweight management concept of "Markdown as State".
@@ -202,4 +202,4 @@ Mobile narrow-screen display effect
 </div>
 ```
 
-![LaTex](/public/images/Zenith_2026/latex_show.png)
+![LaTex](/images/Zenith_2026/latex_show.png)

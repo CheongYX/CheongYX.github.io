@@ -38,7 +38,7 @@ const tabRegex = /<!--\s*tab:\s*(.+?)\s*-->/gi;
 
 **切片执行流 (Slicing Execution Flow):**
 
-1. **指针遍历**：正则引擎通过 `exec()` 方法在文档中不断寻找 `< !-- tab: [Name] -- >` 标记。在循环体内，通过记录 `lastIndex` 属性追踪当前匹配段的终点。
+1. **指针遍历**：正则引擎通过 `exec()` 方法在文档中不断寻找 `< !-- tab: [Name] -->` 标记。在循环体内，通过记录 `lastIndex` 属性追踪当前匹配段的终点。
 2. **块级截取**：对于每次匹配，系统会使用 `slice()` 提取上一个 `lastIndex` 到当前匹配 `index` 之间的文本内容，并使用 `trim()` 剥离多余的回车与空白。
 3. **状态包装**：提取的纯文本与当前的标签名称会被组装成一个 JavaScript 对象 `{ title: currentTitle, content: tabContent }`，并推入预先定义的 `rawTabs` 数组。
 4. **兜底处理机制**：

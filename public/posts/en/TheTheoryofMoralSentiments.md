@@ -7,7 +7,7 @@ description: "The Theory of Moral Sentiments" - Adam Smith / Translated by Luo W
 cover: /Gallery/Background/daodeqingcaolun.png
 ---
 
-![The Theory of Moral Sentiments](/public/images/books_cover/daodeqingcaolun.jpg)
+![The Theory of Moral Sentiments](/images/books_cover/daodeqingcaolun.jpg)
 
 ## ——On Resentment, Justice, Religion, and Inner Conflict: I Finally Found a Coherent Explanation
 
