@@ -7,7 +7,7 @@ description: 《道德情操论》-亚当·斯密 / 罗卫东 张正萍 译
 cover: /Gallery/Background/daodeqingcaolun.png
 ---
 
-![道德情操论](/public/images/books_cover/daodeqingcaolun.jpg)
+![道德情操论](/images/books_cover/daodeqingcaolun.jpg)
 
 ## ——关于委屈、正义、宗教与内耗，我终于找到一套能自洽的解释
 
