@@ -110,7 +110,7 @@ When implementing the small perspective transformation assignment, the code logi
 
 ### Results:
 
-<video src="/public/images/DigitalImageProcess/HW1.mp4" autoplay loop muted playsinline width="100%" class="rounded-xl"></video>
+<video src="/images/DigitalImageProcess/HW1.mp4" autoplay loop muted playsinline width="100%" class="rounded-xl"></video>
 
 <!-- tab: Homework 2: Histogram Equalization -->
 
@@ -194,8 +194,8 @@ This strategy of "taking from the rich and giving to the poor" makes the image h
 
 ### Results:
 
-<video src="/public/images/DigitalImageProcess/HW2_2.mp4" autoplay loop muted playsinline width="100%" class="rounded-xl"></video>
-<video src="/public/images/DigitalImageProcess/HW2_3.mp4" autoplay loop muted playsinline width="100%" class="rounded-xl"></video>
+<video src="/images/DigitalImageProcess/HW2_2.mp4" autoplay loop muted playsinline width="100%" class="rounded-xl"></video>
+<video src="/images/DigitalImageProcess/HW2_3.mp4" autoplay loop muted playsinline width="100%" class="rounded-xl"></video>
 
 <!-- tab: Homework 3: Image Segmentation -->
 
@@ -285,7 +285,7 @@ Through the above derivation, a segmentation model with spatial awareness is imp
 
 ### Results:
 
-<video src="/public/images/DigitalImageProcess/HW3.mp4" autoplay loop muted playsinline width="100%" class="rounded-xl"></video>
+<video src="/images/DigitalImageProcess/HW3.mp4" autoplay loop muted playsinline width="100%" class="rounded-xl"></video>
 
 <!-- tab: Project: Blood Cell Target Detection -->
 
@@ -305,7 +305,7 @@ However, when I applied this mathematical model, which had been consistently suc
 2. **Morphological adhesion disaster:** Red blood cells in blood smears exhibit severe "rouleaux formation (overlapping)." Connected component detection based on simple dilation and erosion would recognize an entire cluster of cells as a single target.
 
 So at that time, the results I obtained looked like this:
-![FirstTimeAccuracy](/public/images/DigitalImageProcess/FirstTimeAccuracy.png)
+![FirstTimeAccuracy](/images/DigitalImageProcess/FirstTimeAccuracy.png)
 
 ### 2. Paradigm Shift: From "Global Segmentation" to "Multi-dimensional Feature Decoupling"
 
@@ -354,4 +354,4 @@ From the "linear parameter tuning" of HW1-3 to the final project's "multi-featur
 
 ### Results:
 
-![Result Display](/public/images/DigitalImageProcess/final_result.png)
+![Result Display](/images/DigitalImageProcess/final_result.png)
