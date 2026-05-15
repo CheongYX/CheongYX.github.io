@@ -112,7 +112,7 @@ $$
 
 ### 结果展示：
 
-<video src="/public/images/DigitalImageProcess/HW1.mp4" autoplay loop muted playsinline width="100%" class="rounded-xl"></video>
+<video src="/images/DigitalImageProcess/HW1.mp4" autoplay loop muted playsinline width="100%" class="rounded-xl"></video>
 
 <!-- tab: 作业2：直方图均衡化 -->
 
@@ -196,8 +196,8 @@ $$
 
 ### 结果展示：
 
-<video src="/public/images/DigitalImageProcess/HW2_2.mp4" autoplay loop muted playsinline width="100%" class="rounded-xl"></video>
-<video src="/public/images/DigitalImageProcess/HW2_3.mp4" autoplay loop muted playsinline width="100%" class="rounded-xl"></video>
+<video src="/images/DigitalImageProcess/HW2_2.mp4" autoplay loop muted playsinline width="100%" class="rounded-xl"></video>
+<video src="/images/DigitalImageProcess/HW2_3.mp4" autoplay loop muted playsinline width="100%" class="rounded-xl"></video>
 
 <!-- tab: 作业3：图像分割 -->
 
@@ -287,7 +287,7 @@ $$
 
 ### 结果展示：
 
-<video src="/public/images/DigitalImageProcess/HW3.mp4" autoplay loop muted playsinline width="100%" class="rounded-xl"></video>
+<video src="/images/DigitalImageProcess/HW3.mp4" autoplay loop muted playsinline width="100%" class="rounded-xl"></video>
 
 <!-- tab: 项目作业: 血液细胞目标检测 -->
 
@@ -307,7 +307,7 @@ $$
 2. **形态学粘连灾难：** 血液切片中的红细胞存在严重的“钱币状重叠（Overlapping）”，基于简单膨胀腐蚀的连通域检测会将一整团细胞识别为一个单一目标。
 
 所以这时候我的得到的结果是这样的：
-![FirstTimeAccuracy](/public/images/DigitalImageProcess/FirstTimeAccuracy.png)
+![FirstTimeAccuracy](/images/DigitalImageProcess/FirstTimeAccuracy.png)
 
 ### 2. 范式转换：从“全局分割”到“多维特征解耦”
 
@@ -356,4 +356,4 @@ $$
 
 ### 结果展示：
 
-![结果展示](/public/images/DigitalImageProcess/final_result.png)
+![结果展示](/images/DigitalImageProcess/final_result.png)
