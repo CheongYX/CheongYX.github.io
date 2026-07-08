@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'; // ✨ 记得顶部引入 useEffect
+import React, { useState, useEffect } from 'react';
 import ClickFireworks from './components/ClickFireworks';
 import MouseTechTrail from './components/MouseTechTrail';
 import EmailComposeModal from './components/EmailComposeModal';
@@ -13,46 +13,55 @@ export default function App() {
   const [isEmailModalOpen, setIsEmailModalOpen] = useState(false);
   const [isEyeCareMode, setIsEyeCareMode] = useState(false); 
   
-  // 1️⃣ 强化版初始化：页面一刷新，先看网址里有没有要求打开某篇文章
+  // ✨ 核心魔法：深度查找引擎
+  // 专门为了适配你有 `articles` 嵌套专栏的数据结构而设计
+  const getPostById = (data, targetId) => {
+    if (!targetId) return null;
+    
+    for (const item of data) {
+      // 1. 先在最外层找（普通项目、阅读等）
+      if (item.id === targetId) return item;
+      
+      // 2. 如果是专栏，深入 articles 数组里面找
+      if (item.articles && Array.isArray(item.articles)) {
+        const nestedItem = item.articles.find(sub => sub.id === targetId);
+        if (nestedItem) return nestedItem;
+      }
+    }
+    return targetId; // 兜底：如果没找到完整对象，至少返回个 ID 字符串
+  };
+
+  // 1️⃣ 初始化：读取网址小尾巴，并去 timelineData 里把完整数据挖出来
   const [selectedItem, setSelectedItem] = useState(() => {
     const params = new URLSearchParams(window.location.search);
     const postId = params.get('post');
-    if (!postId) return null;
-
-    // 为了防止你的 selectedItem 存的是完整对象，这里去原始数据里把它找出来
-    const allData = getTimelineData('zh'); // 初始先用中文找
-    const foundItem = allData.find(item => item.id === postId || item.mdSource === postId);
-    return foundItem || postId; 
+    return getPostById(getTimelineData('zh'), postId);
   });
 
-  // 2️⃣ 监听浏览器的“前进/后退”按键
+  // 2️⃣ 监听“前进/后退”按键
   useEffect(() => {
     const handlePopState = () => {
       const params = new URLSearchParams(window.location.search);
       const postId = params.get('post');
-      if (!postId) {
-        setSelectedItem(null); // 回到列表页
-      } else {
-        const allData = getTimelineData(lang);
-        const foundItem = allData.find(item => item.id === postId || item.mdSource === postId);
-        setSelectedItem(foundItem || postId);
-      }
+      // 确保使用当前的 lang 重新获取数据，防止语言错乱
+      setSelectedItem(getPostById(getTimelineData(lang), postId));
     };
 
     window.addEventListener('popstate', handlePopState);
     return () => window.removeEventListener('popstate', handlePopState);
-  }, [lang]); // 依赖 lang，确保切换语言时找对数据
+  }, [lang]);
 
-  // 3️⃣ 创建一个“带修改网址功能”的拦截函数
+  // 3️⃣ 拦截器：修改状态的同时，修改网址
   const handleSetSelectedItem = (item) => {
-    setSelectedItem(item); // 照常更新 React 状态
+    setSelectedItem(item);
 
     if (item) {
-      // 打开文章时，在网址后面加上 ?post=xxx 
-      const id = typeof item === 'object' ? (item.mdSource || item.id) : item;
-      window.history.pushState({}, '', window.location.pathname + '?post=' + id);
+      // 提取正确的 id 字段
+      const id = typeof item === 'object' ? item.id : item;
+      const newUrl = window.location.pathname + '?post=' + id;
+      window.history.pushState({}, '', newUrl);
     } else {
-      // 关闭文章时，把网址后面那串清理掉
+      // 关闭文章时，清除网址参数
       window.history.pushState({}, '', window.location.pathname);
     }
   };
@@ -76,7 +85,7 @@ export default function App() {
           filter={filter} 
           setFilter={setFilter} 
           selectedItem={selectedItem} 
-          setSelectedItem={handleSetSelectedItem} // ✨ 这里换成了我们自定义的强化函数！
+          setSelectedItem={handleSetSelectedItem}  {/* <-- 接入拦截器 */}
           filteredData={filteredData} 
         />
       </LayoutShell>

@@ -119,7 +119,7 @@ export const getTimelineData = (lang) => [
     category: 'project', 
     layout: 'tabs', 
     description: lang === 'zh' ? '本次数字图像处理实践由三个基础小作业和一个综合项目作业组成。小作业一实现图像的透视变换，将灰度图像中的任意四边形区域校正为正方形；小作业二对灰度图像进行直方图均衡化，以增强图像对比度；小作业三则采用K-means或Mean Shift算法完成图像分割。在前三个作业的基础上，项目作业将上述方法综合运用于血液细胞检测任务，要求基于传统图像处理方法（不使用神经网络）自动识别BCCD数据集中的红细胞、白细胞和血小板，用三色框标注区域，并对照真值文件计算准确率。' : 'This practice consists of three basic assignments and one comprehensive project. Assignment One performs perspective transformation to map a quadrilateral region in a grayscale image to a square. Assignment Two applies histogram equalization to enhance image contrast. Assignment Three uses K-means or Mean Shift for image segmentation. Building on these, the project applies traditional image processing methods to detect red blood cells, white blood cells, and platelets in the BCCD dataset, marking them with three-color bounding boxes and evaluating accuracy against ground truth annotations.',
-    tags: ['FullStack','Minimax', 'Alpha-Beta Pruning', 'Monte Carlo Tree Search (MCTS)', 'Zobrist Hashing']
+    tags: ['Digital Image Processing', 'OpenCV', 'K-means', 'Mean Shift', 'Histogram Equalization']
   },
   {
     id: "java_project_2022", 
