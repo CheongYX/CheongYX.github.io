@@ -85,7 +85,7 @@ export default function App() {
           filter={filter} 
           setFilter={setFilter} 
           selectedItem={selectedItem} 
-          setSelectedItem={handleSetSelectedItem}  {/* <-- 接入拦截器 */}
+          setSelectedItem={handleSetSelectedItem}
           filteredData={filteredData} 
         />
       </LayoutShell>
