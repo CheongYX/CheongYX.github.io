@@ -4,66 +4,66 @@
 <meta charset="UTF-8">
 <title>1D Convolution Interactive Demo</title>
 <style>
-    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f9fafb; display: flex; flex-direction: column; align-items: center; padding: 20px; color: #333; }
-    .demo-container { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); width: 100%; max-width: 600px; text-align: center; }
-    h2 { margin-top: 0; color: #2c3e50; }
+    body { font-family: sans-serif; background-color: #f9fafb; display: flex; flex-direction: column; align-items: center; padding: 20px; color: #333; }
+    .demo-container { background: white; padding: 30px 20px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); width: 100%; max-width: 600px; text-align: center; }
+    h2 { margin-top: 0; color: #2c3e50; font-size: 22px; }
     
-    /* container styles */
-    .array-row { display: flex; justify-content: center; position: relative; margin: 20px 0; height: 50px; }
-    .box { width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: bold; border-radius: 8px; margin: 0 5px; box-shadow: inset 0 0 0 2px rgba(0,0,0,0.1); }
+    .animation-area { position: relative; margin: 60px auto 20px auto; width: max-content; }
     
-    /* element colors */
-    .pad-box { background-color: #e5e7eb; color: #9ca3af; } /* grey padding */
-    .input-box { background-color: #bae6fd; color: #0284c7; } /* blue input */
-    .kernel-box { background-color: #fed7aa; color: #c2410c; } /* orange kernel */
-    .result-box { background-color: #bbf7d0; color: #166534; transition: all 0.3s; } /* green result */
-    .empty-result { background-color: #f3f4f6; color: #d1d5db; }
+    #sliding-kernel { position: absolute; top: -60px; left: -60px; display: flex; gap: 10px; transition: left 0.4s ease-in-out, opacity 0.3s; opacity: 0; }
     
-    /* sliding kernel */
-    #sliding-kernel { position: absolute; left: 50%; transform: translateX(-150px); display: flex; transition: transform 0.4s ease-in-out; }
+    .array-row { display: flex; gap: 10px; justify-content: center; }
     
-    /* formula panel */
-    .formula-panel { background: #f8fafc; border: 1px solid #e2e8f0; padding: 15px; border-radius: 8px; font-size: 18px; margin: 20px 0; font-family: monospace; }
-    .highlight { color: #e11d48; font-weight: bold; }
+    .box { width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: bold; border-radius: 8px; box-shadow: inset 0 0 0 2px rgba(0,0,0,0.1); transition: all 0.3s; }
     
-    /* button styles */
-    .controls { margin-top: 20px; display: flex; justify-content: center; gap: 15px; }
-    button { padding: 10px 20px; font-size: 16px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; transition: background 0.2s; }
+    .pad-box { background-color: #f3f4f6; color: #9ca3af; } 
+    .input-box { background-color: #e0f2fe; color: #0284c7; } 
+    .kernel-box { background-color: #fed7aa; color: #c2410c; box-shadow: 0 4px 6px rgba(0,0,0,0.2); } 
+    .result-box { background-color: #bbf7d0; color: #166534; } 
+    .empty-result { background-color: #f3f4f6; color: #d1d5db; } 
+    
+    .active-calc { box-shadow: inset 0 0 0 4px #fbbf24; transform: scale(1.05); }
+
+    .formula-panel { background: #f8fafc; border: 1px solid #e2e8f0; padding: 15px; border-radius: 8px; margin: 25px auto; width: 90%; font-family: monospace; text-align: center; min-height: 70px; display: flex; flex-direction: column; justify-content: center; gap: 8px; }
+    
+    .step-text { color: #64748b; font-size: 16px; font-family: sans-serif; }
+    .math-text { font-size: 18px; white-space: nowrap; color: #0f172a; } 
+    
+    .highlight { color: #e11d48; font-weight: bold; font-size: 20px;}
+    
+    .controls { display: flex; justify-content: center; gap: 15px; margin-top: 10px; }
+    button { padding: 10px 20px; font-size: 16px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; transition: all 0.2s; }
     button:disabled { background: #e5e7eb; color: #9ca3af; cursor: not-allowed; }
     #prevBtn { background: #f1f5f9; color: #475569; }
-    #prevBtn:hover:not(:disabled) { background: #e2e8f0; }
     #nextBtn { background: #3b82f6; color: white; }
-    #nextBtn:hover:not(:disabled) { background: #2563eb; }
 </style>
 </head>
 <body>
 
 <div class="demo-container">
-    <h2>Interactive: 1D Convolution (Sliding Window)</h2>
+    <h2>Interactive: 1D Convolution</h2>
     
-    <p><strong>Step 0:</strong> Flip the kernel h=[4, 5] &rarr; [5, 4]</p>
-    
-    <div class="array-row" style="z-index: 10;">
+    <div class="animation-area">
         <div id="sliding-kernel">
             <div class="box kernel-box">5</div>
             <div class="box kernel-box">4</div>
         </div>
+        
+        <div class="array-row">
+            <div class="box pad-box" id="in-0">0</div>
+            <div class="box input-box" id="in-1">1</div>
+            <div class="box input-box" id="in-2">2</div>
+            <div class="box input-box" id="in-3">3</div>
+            <div class="box pad-box" id="in-4">0</div>
+        </div>
     </div>
-    
+
+    <div class="formula-panel">
+        <div class="step-text" id="f-step">Ready</div>
+        <div class="math-text" id="f-math">Click "Next" to start computing</div>
+    </div>
+
     <div class="array-row">
-        <div class="box pad-box" title="Padding">0</div>
-        <div class="box input-box">1</div>
-        <div class="box input-box">2</div>
-        <div class="box input-box">3</div>
-        <div class="box pad-box" title="Padding">0</div>
-    </div>
-
-    <div class="formula-panel" id="formula-text">
-        Click "Next" to start computing
-    </div>
-
-    <h3 style="margin-bottom: 10px;">Result x * h</h3>
-    <div class="array-row" id="result-row">
         <div class="box empty-result" id="res-0">?</div>
         <div class="box empty-result" id="res-1">?</div>
         <div class="box empty-result" id="res-2">?</div>
@@ -77,67 +77,60 @@
 </div>
 
 <script>
-    let currentStep = -1; // -1 means not started yet
-    const maxStep = 3; // 4 steps: 0, 1, 2, 3
-    
-    // data logic
+    let step = 0; 
+    const maxStep = 4; 
     const paddedX = [0, 1, 2, 3, 0];
     const h_flipped = [5, 4];
-    const results = [4, 13, 22, 15]; // precomputed results
+    const results = [4, 13, 22, 15]; 
 
-    // UI elements
     const kernelEl = document.getElementById('sliding-kernel');
-    const formulaEl = document.getElementById('formula-text');
+    const fStep = document.getElementById('f-step');
+    const fMath = document.getElementById('f-math');
     const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
 
     function updateUI() {
-        // 1. control button states
-        prevBtn.disabled = (currentStep === -1);
-        nextBtn.disabled = (currentStep === maxStep);
+        prevBtn.disabled = (step === 0);
+        nextBtn.disabled = (step === maxStep);
 
-        if (currentStep === -1) {
-            kernelEl.style.transform = `translateX(-150px)`; // reset to far left
-            formulaEl.innerHTML = "Click “Next” to start sliding and computing";
+        for(let i = 0; i < 5; i++) document.getElementById(`in-${i}`).classList.remove('active-calc');
+
+        if (step === 0) {
+            kernelEl.style.opacity = '0';
+            kernelEl.style.left = '-60px'; 
+            fStep.innerHTML = 'Ready';
+            fMath.innerHTML = 'Click "Next" to start computing';
             resetResults();
             return;
         }
 
-        // 2. move the convolution kernel
-        // each box width 50px + left/right margin 5px each = 60px
-        // initial offset: at step=0, offset = -90px (aligned with pad[0] and input[1])
-        const offset = -90 + (currentStep * 60); 
-        kernelEl.style.transform = `translateX(${offset}px)`;
+        kernelEl.style.opacity = '1';
+        let calcIndex = step - 1; 
+        kernelEl.style.left = (calcIndex * 60) + 'px';
 
-        // 3. update formula text
-        const val1 = h_flipped[0] * paddedX[currentStep];
-        const val2 = h_flipped[1] * paddedX[currentStep + 1];
-        const currentSum = val1 + val2;
+        document.getElementById(`in-${calcIndex}`).classList.add('active-calc');
+        document.getElementById(`in-${calcIndex + 1}`).classList.add('active-calc');
+
+        const val1 = h_flipped[0] * paddedX[calcIndex];
+        const val2 = h_flipped[1] * paddedX[calcIndex + 1];
         
-        formulaEl.innerHTML = `Slide ${currentStep + 1}: <br>
-        (<span class="highlight">${h_flipped[0]} &times; ${paddedX[currentStep]}</span>) + 
-        (<span class="highlight">${h_flipped[1]} &times; ${paddedX[currentStep+1]}</span>) 
-        = ${val1} + ${val2} = <strong>${currentSum}</strong>`;
+        fStep.innerHTML = `Slide ${step}`;
+        fMath.innerHTML = `(<span class="highlight">${h_flipped[0]}</span> × ${paddedX[calcIndex]}) + (<span class="highlight">${h_flipped[1]}</span> × ${paddedX[calcIndex+1]}) = ${val1 + val2}`;
 
-        // 4. update result array
-        updateResults();
-    }
-
-    function updateResults() {
-        for (let i = 0; i <= maxStep; i++) {
+        for (let i = 0; i < 4; i++) {
             const resBox = document.getElementById(`res-${i}`);
-            if (i <= currentStep) {
+            if (i < step) {
                 resBox.innerText = results[i];
-                resBox.className = "box result-box"; // green
+                resBox.className = "box result-box"; 
             } else {
                 resBox.innerText = "?";
-                resBox.className = "box empty-result"; // grey
+                resBox.className = "box empty-result"; 
             }
         }
     }
 
     function resetResults() {
-        for (let i = 0; i <= maxStep; i++) {
+        for (let i = 0; i < 4; i++) {
             const resBox = document.getElementById(`res-${i}`);
             resBox.innerText = "?";
             resBox.className = "box empty-result";
@@ -145,10 +138,9 @@
     }
 
     function changeStep(delta) {
-        currentStep += delta;
-        // clamp
-        if (currentStep < -1) currentStep = -1;
-        if (currentStep > maxStep) currentStep = maxStep;
+        step += delta;
+        if (step < 0) step = 0;
+        if (step > maxStep) step = maxStep;
         updateUI();
     }
 </script>

@@ -13,37 +13,29 @@ export default function App() {
   const [isEmailModalOpen, setIsEmailModalOpen] = useState(false);
   const [isEyeCareMode, setIsEyeCareMode] = useState(false); 
   
-  // ✨ 核心魔法：深度查找引擎
-  // 专门为了适配你有 `articles` 嵌套专栏的数据结构而设计
   const getPostById = (data, targetId) => {
     if (!targetId) return null;
     
     for (const item of data) {
-      // 1. 先在最外层找（普通项目、阅读等）
       if (item.id === targetId) return item;
       
-      // 2. 如果是专栏，深入 articles 数组里面找
       if (item.articles && Array.isArray(item.articles)) {
         const nestedItem = item.articles.find(sub => sub.id === targetId);
         if (nestedItem) return nestedItem;
       }
     }
-    return targetId; // 兜底：如果没找到完整对象，至少返回个 ID 字符串
+    return targetId; 
   };
-
-  // 1️⃣ 初始化：读取网址小尾巴，并去 timelineData 里把完整数据挖出来
   const [selectedItem, setSelectedItem] = useState(() => {
     const params = new URLSearchParams(window.location.search);
     const postId = params.get('post');
     return getPostById(getTimelineData('zh'), postId);
   });
 
-  // 2️⃣ 监听“前进/后退”按键
   useEffect(() => {
     const handlePopState = () => {
       const params = new URLSearchParams(window.location.search);
       const postId = params.get('post');
-      // 确保使用当前的 lang 重新获取数据，防止语言错乱
       setSelectedItem(getPostById(getTimelineData(lang), postId));
     };
 
@@ -51,17 +43,14 @@ export default function App() {
     return () => window.removeEventListener('popstate', handlePopState);
   }, [lang]);
 
-  // 3️⃣ 拦截器：修改状态的同时，修改网址
   const handleSetSelectedItem = (item) => {
     setSelectedItem(item);
 
     if (item) {
-      // 提取正确的 id 字段
       const id = typeof item === 'object' ? item.id : item;
       const newUrl = window.location.pathname + '?post=' + id;
       window.history.pushState({}, '', newUrl);
     } else {
-      // 关闭文章时，清除网址参数
       window.history.pushState({}, '', window.location.pathname);
     }
   };
