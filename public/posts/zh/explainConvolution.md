@@ -208,6 +208,17 @@ $$
 
 ### 3.4 观察：每一步在干什么
 
+<div align="center" style="margin: 2rem 0;">
+  <iframe 
+    src="/demos/DeepLearning/convolutioncn.html" 
+    width="100%" 
+    height="600px" 
+    style="border: 1px solid #e2e8f0; border-radius: 12px; box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1); background: #ffffff;" 
+    title="Interactive Demo"
+  ></iframe>
+  <p align="center" style="font-size: 0.9em; color: #64748b; margin-top: 0.5rem;">👆 这是一个可以直接交互的模块（支持鼠标/触摸）</p>
+</div>
+
 注意看每一次滑动的"重叠情况"：
 
 | 滑动 | 重叠的格子数 | 结果 |
@@ -533,8 +544,6 @@ $$
 \text{输出高度} = H - Kh + 1, \quad \text{输出宽度} = W - Kw + 1
 $$
 
----
-
 ## 结语
 
 如果你从头读到了这里，恭喜你！你已经彻底理解了卷积
@@ -558,8 +567,6 @@ $$
 你会知道：它不过是在描述"翻转→滑动→乘→加"这件事。
 
 **数学公式只是把自然语言翻译成了符号语言。现在，你两种语言都会了。** 😊
-
----
 
 ## 附录：术语中英文对照
 
@@ -585,4 +592,4 @@ $$
 
 *如果你觉得这篇博客有帮助，欢迎分享给其他正在为卷积烦恼的朋友。*
 
-*有任何问题或建议，欢迎在评论区留言讨论。* 😊
+*有任何问题或建议，欢迎在评论区留言讨论。* 

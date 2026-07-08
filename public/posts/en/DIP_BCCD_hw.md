@@ -110,7 +110,7 @@ When implementing the small perspective transformation assignment, the code logi
 
 ### Results:
 
-<video src="/images/DigitalImageProcess/HW1.mp4" autoplay loop muted playsinline width="100%" class="rounded-xl"></video>
+<video src="/videos/DigitalImageProcess/HW1.mp4" autoplay loop muted playsinline width="100%" class="rounded-xl"></video>
 
 <!-- tab: Homework 2: Histogram Equalization -->
 
@@ -194,8 +194,8 @@ This strategy of "taking from the rich and giving to the poor" makes the image h
 
 ### Results:
 
-<video src="/images/DigitalImageProcess/HW2_2.mp4" autoplay loop muted playsinline width="100%" class="rounded-xl"></video>
-<video src="/images/DigitalImageProcess/HW2_3.mp4" autoplay loop muted playsinline width="100%" class="rounded-xl"></video>
+<video src="/videos/DigitalImageProcess/HW2_2.mp4" autoplay loop muted playsinline width="100%" class="rounded-xl"></video>
+<video src="/videos/DigitalImageProcess/HW2_3.mp4" autoplay loop muted playsinline width="100%" class="rounded-xl"></video>
 
 <!-- tab: Homework 3: Image Segmentation -->
 
@@ -285,7 +285,7 @@ Through the above derivation, a segmentation model with spatial awareness is imp
 
 ### Results:
 
-<video src="/images/DigitalImageProcess/HW3.mp4" autoplay loop muted playsinline width="100%" class="rounded-xl"></video>
+<video src="/videos/DigitalImageProcess/HW3.mp4" autoplay loop muted playsinline width="100%" class="rounded-xl"></video>
 
 <!-- tab: Project: Blood Cell Target Detection -->
 

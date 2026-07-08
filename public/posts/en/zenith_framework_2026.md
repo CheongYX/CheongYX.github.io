@@ -178,7 +178,7 @@ Desktop wide-screen display effect
 ![Computer_sight](/images/Zenith_2026/Computer_sight.png)
 
 Mobile narrow-screen display effect
-<video src="/images/Zenith_2026/Phone_sight.mp4" autoplay loop muted playsinline width="30%" class="rounded-xl"></video>
+<video src="/videos/Zenith_2026/Phone_sight.mp4" autoplay loop muted playsinline width="30%" class="rounded-xl"></video>
 
 2.  **Interaction Demo Video (MP4)** :
 
@@ -189,7 +189,7 @@ Mobile narrow-screen display effect
 </div>
 ```
 
-<video src="/images/Zenith_2026/Tab_Shifting.mp4" autoplay loop muted playsinline width="100%" class="rounded-xl"></video>
+<video src="/videos/Zenith_2026/Tab_Shifting.mp4" autoplay loop muted playsinline width="100%" class="rounded-xl"></video>
 
 3.  **Advanced Typography Close-up**:
 

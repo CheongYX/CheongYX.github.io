@@ -215,6 +215,17 @@ $$
 
 ### 3.4 Observation: What's Happening at Each Step
 
+<div align="center" style="margin: 2rem 0;">
+  <iframe 
+    src="/demos/DeepLearning/convolutionen.html" 
+    width="100%" 
+    height="600px" 
+    style="border: 1px solid #e2e8f0; border-radius: 12px; box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1); background: #ffffff;" 
+    title="Interactive Demo"
+  ></iframe>
+  <p align="center" style="font-size: 0.9em; color: #64748b; margin-top: 0.5rem;">👆 An interactive module (supports mouse/touch)</p>
+</div>
+
 Notice the overlap pattern at each slide:
 
 | Slide | Overlapping positions | Result |

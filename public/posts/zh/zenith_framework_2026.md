@@ -183,7 +183,7 @@ Zenith 框架目前已稳定运行，并成功承载了包括前后端全栈应�
 ![Computer_sight](/images/Zenith_2026/Computer_sight.png)
 
 手机窄屏显示效果
-<video src="/images/Zenith_2026/Phone_sight.mp4" autoplay loop muted playsinline width="30%" class="rounded-xl"></video>
+<video src="/videos/Zenith_2026/Phone_sight.mp4" autoplay loop muted playsinline width="30%" class="rounded-xl"></video>
 
 1. **交互演示视频 (GIF)**：
 
@@ -194,7 +194,7 @@ Zenith 框架目前已稳定运行，并成功承载了包括前后端全栈应�
 </div>
 ```
 
-<video src="/images/Zenith_2026/Tab_Shifting.mp4" autoplay loop muted playsinline width="100%" class="rounded-xl"></video>
+<video src="/videos/Zenith_2026/Tab_Shifting.mp4" autoplay loop muted playsinline width="100%" class="rounded-xl"></video>
 
 1. **高级排版特写**：
 

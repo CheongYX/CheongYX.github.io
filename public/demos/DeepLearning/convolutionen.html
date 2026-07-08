@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>1D Convolution Interactive Demo</title>
+<style>
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f9fafb; display: flex; flex-direction: column; align-items: center; padding: 20px; color: #333; }
+    .demo-container { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); width: 100%; max-width: 600px; text-align: center; }
+    h2 { margin-top: 0; color: #2c3e50; }
+    
+    /* container styles */
+    .array-row { display: flex; justify-content: center; position: relative; margin: 20px 0; height: 50px; }
+    .box { width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: bold; border-radius: 8px; margin: 0 5px; box-shadow: inset 0 0 0 2px rgba(0,0,0,0.1); }
+    
+    /* element colors */
+    .pad-box { background-color: #e5e7eb; color: #9ca3af; } /* grey padding */
+    .input-box { background-color: #bae6fd; color: #0284c7; } /* blue input */
+    .kernel-box { background-color: #fed7aa; color: #c2410c; } /* orange kernel */
+    .result-box { background-color: #bbf7d0; color: #166534; transition: all 0.3s; } /* green result */
+    .empty-result { background-color: #f3f4f6; color: #d1d5db; }
+    
+    /* sliding kernel */
+    #sliding-kernel { position: absolute; left: 50%; transform: translateX(-150px); display: flex; transition: transform 0.4s ease-in-out; }
+    
+    /* formula panel */
+    .formula-panel { background: #f8fafc; border: 1px solid #e2e8f0; padding: 15px; border-radius: 8px; font-size: 18px; margin: 20px 0; font-family: monospace; }
+    .highlight { color: #e11d48; font-weight: bold; }
+    
+    /* button styles */
+    .controls { margin-top: 20px; display: flex; justify-content: center; gap: 15px; }
+    button { padding: 10px 20px; font-size: 16px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; transition: background 0.2s; }
+    button:disabled { background: #e5e7eb; color: #9ca3af; cursor: not-allowed; }
+    #prevBtn { background: #f1f5f9; color: #475569; }
+    #prevBtn:hover:not(:disabled) { background: #e2e8f0; }
+    #nextBtn { background: #3b82f6; color: white; }
+    #nextBtn:hover:not(:disabled) { background: #2563eb; }
+</style>
+</head>
+<body>
+
+<div class="demo-container">
+    <h2>Interactive: 1D Convolution (Sliding Window)</h2>
+    
+    <p><strong>Step 0:</strong> Flip the kernel h=[4, 5] &rarr; [5, 4]</p>
+    
+    <div class="array-row" style="z-index: 10;">
+        <div id="sliding-kernel">
+            <div class="box kernel-box">5</div>
+            <div class="box kernel-box">4</div>
+        </div>
+    </div>
+    
+    <div class="array-row">
+        <div class="box pad-box" title="Padding">0</div>
+        <div class="box input-box">1</div>
+        <div class="box input-box">2</div>
+        <div class="box input-box">3</div>
+        <div class="box pad-box" title="Padding">0</div>
+    </div>
+
+    <div class="formula-panel" id="formula-text">
+        Click "Next" to start computing
+    </div>
+
+    <h3 style="margin-bottom: 10px;">Result x * h</h3>
+    <div class="array-row" id="result-row">
+        <div class="box empty-result" id="res-0">?</div>
+        <div class="box empty-result" id="res-1">?</div>
+        <div class="box empty-result" id="res-2">?</div>
+        <div class="box empty-result" id="res-3">?</div>
+    </div>
+
+    <div class="controls">
+        <button id="prevBtn" onclick="changeStep(-1)" disabled>Previous</button>
+        <button id="nextBtn" onclick="changeStep(1)">Next</button>
+    </div>
+</div>
+
+<script>
+    let currentStep = -1; // -1 means not started yet
+    const maxStep = 3; // 4 steps: 0, 1, 2, 3
+    
+    // data logic
+    const paddedX = [0, 1, 2, 3, 0];
+    const h_flipped = [5, 4];
+    const results = [4, 13, 22, 15]; // precomputed results
+
+    // UI elements
+    const kernelEl = document.getElementById('sliding-kernel');
+    const formulaEl = document.getElementById('formula-text');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+
+    function updateUI() {
+        // 1. control button states
+        prevBtn.disabled = (currentStep === -1);
+        nextBtn.disabled = (currentStep === maxStep);
+
+        if (currentStep === -1) {
+            kernelEl.style.transform = `translateX(-150px)`; // reset to far left
+            formulaEl.innerHTML = "Click “Next” to start sliding and computing";
+            resetResults();
+            return;
+        }
+
+        // 2. move the convolution kernel
+        // each box width 50px + left/right margin 5px each = 60px
+        // initial offset: at step=0, offset = -90px (aligned with pad[0] and input[1])
+        const offset = -90 + (currentStep * 60); 
+        kernelEl.style.transform = `translateX(${offset}px)`;
+
+        // 3. update formula text
+        const val1 = h_flipped[0] * paddedX[currentStep];
+        const val2 = h_flipped[1] * paddedX[currentStep + 1];
+        const currentSum = val1 + val2;
+        
+        formulaEl.innerHTML = `Slide ${currentStep + 1}: <br>
+        (<span class="highlight">${h_flipped[0]} &times; ${paddedX[currentStep]}</span>) + 
+        (<span class="highlight">${h_flipped[1]} &times; ${paddedX[currentStep+1]}</span>) 
+        = ${val1} + ${val2} = <strong>${currentSum}</strong>`;
+
+        // 4. update result array
+        updateResults();
+    }
+
+    function updateResults() {
+        for (let i = 0; i <= maxStep; i++) {
+            const resBox = document.getElementById(`res-${i}`);
+            if (i <= currentStep) {
+                resBox.innerText = results[i];
+                resBox.className = "box result-box"; // green
+            } else {
+                resBox.innerText = "?";
+                resBox.className = "box empty-result"; // grey
+            }
+        }
+    }
+
+    function resetResults() {
+        for (let i = 0; i <= maxStep; i++) {
+            const resBox = document.getElementById(`res-${i}`);
+            resBox.innerText = "?";
+            resBox.className = "box empty-result";
+        }
+    }
+
+    function changeStep(delta) {
+        currentStep += delta;
+        // clamp
+        if (currentStep < -1) currentStep = -1;
+        if (currentStep > maxStep) currentStep = maxStep;
+        updateUI();
+    }
+</script>
+
+</body>
+</html>

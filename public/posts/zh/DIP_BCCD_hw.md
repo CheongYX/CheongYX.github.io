@@ -112,7 +112,7 @@ $$
 
 ### 结果展示：
 
-<video src="/images/DigitalImageProcess/HW1.mp4" autoplay loop muted playsinline width="100%" class="rounded-xl"></video>
+<video src="/videos/DigitalImageProcess/HW1.mp4" autoplay loop muted playsinline width="100%" class="rounded-xl"></video>
 
 <!-- tab: 作业2：直方图均衡化 -->
 
@@ -196,8 +196,8 @@ $$
 
 ### 结果展示：
 
-<video src="/images/DigitalImageProcess/HW2_2.mp4" autoplay loop muted playsinline width="100%" class="rounded-xl"></video>
-<video src="/images/DigitalImageProcess/HW2_3.mp4" autoplay loop muted playsinline width="100%" class="rounded-xl"></video>
+<video src="/videos/DigitalImageProcess/HW2_2.mp4" autoplay loop muted playsinline width="100%" class="rounded-xl"></video>
+<video src="/videos/DigitalImageProcess/HW2_3.mp4" autoplay loop muted playsinline width="100%" class="rounded-xl"></video>
 
 <!-- tab: 作业3：图像分割 -->
 
@@ -287,7 +287,7 @@ $$
 
 ### 结果展示：
 
-<video src="/images/DigitalImageProcess/HW3.mp4" autoplay loop muted playsinline width="100%" class="rounded-xl"></video>
+<video src="/videos/DigitalImageProcess/HW3.mp4" autoplay loop muted playsinline width="100%" class="rounded-xl"></video>
 
 <!-- tab: 项目作业: 血液细胞目标检测 -->
 
