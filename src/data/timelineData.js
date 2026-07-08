@@ -1,5 +1,14 @@
 export const getTimelineData = (lang) => [
-    {
+  {
+    id: "explainConvolution", 
+    date: '2026.07', 
+    title: lang === 'zh' ? '从零开始彻底搞懂卷积：乘法、内积、卷积' : 'A Complete Guide to Convolution – Multiplication, Dot Product, and Convolution',
+    category: 'learning', 
+    layout: 'collections', 
+    description: lang === 'zh' ? '一篇写给初学者的卷积完全指南。不需要高深的数学背景，只需要你愿意一步一步跟着算。' : 'A complete beginner\'s guide to convolution. No advanced math background required – just a willingness to follow along step by step.',
+    tags: ['CNN', 'DeepLearning', 'Algorithm']
+  },
+  {
     id: "zenith_framework_2026", 
     date: '2026.05', 
     title: lang === 'zh' ? 'Zenith: 个人作品集与博客渲染框架' : 'Zenith: Personal Portfolio & Blog Rendering Framework',
