@@ -10,12 +10,12 @@ export const getTimelineData = (lang) => [
     articles:[
       { 
           id: 'dl_explainvector', 
-          title: lang === 'zh' ? '1. 内积（点积）完全指南：从计算到几何，一次搞懂' : 'Inner Product (Dot Product) Complete Guide: From Computation to Geometry', 
+          title: lang === 'zh' ? '1. 内积（点积）完全指南：从计算到几何，一次搞懂' : '1. Inner Product (Dot Product) Complete Guide: From Computation to Geometry', 
           date: '2026-07-08'
         },
         { 
           id: 'dl_explainConvolution', 
-          title: lang === 'zh' ? '2. 从零开始彻底搞懂卷积：乘法、内积、卷积' : 'A Complete Guide to Convolution – Multiplication, Dot Product, and Convolution', 
+          title: lang === 'zh' ? '2. 从零开始彻底搞懂卷积：乘法、内积、卷积' : '2. A Complete Guide to Convolution – Multiplication, Dot Product, and Convolution', 
           date: '2026-07-09'
         }
       ]
