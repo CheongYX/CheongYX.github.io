@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Interactive: Inner Product vs Cosine Similarity Demo</title>
+<style>
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f9fafb; display: flex; flex-direction: column; align-items: center; padding: 20px; color: #333; }
+    .demo-container { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); width: 100%; max-width: 600px; }
+    h2 { margin-top: 0; color: #2c3e50; text-align: center; }
+    
+    /* canvas area */
+    .canvas-container { position: relative; width: 100%; height: 250px; background-color: #f8fafc; border-radius: 8px; border: 1px solid #e2e8f0; margin-bottom: 20px; overflow: hidden; }
+    svg { width: 100%; height: 100%; }
+    
+    /* controls */
+    .controls { background: #f1f5f9; padding: 15px; border-radius: 8px; margin-bottom: 20px; }
+    .control-group { margin-bottom: 15px; display: flex; align-items: center; justify-content: space-between; }
+    .control-group:last-child { margin-bottom: 0; }
+    .control-label { font-weight: bold; width: 120px; color: #475569; }
+    input[type=range] { flex-grow: 1; margin: 0 15px; cursor: pointer; }
+    .value-display { width: 45px; text-align: right; font-weight: bold; color: #2563eb; font-family: monospace; font-size: 16px;}
+    
+    /* data panel */
+    .data-panel { display: flex; flex-direction: column; gap: 10px; }
+    .data-card { background: white; border: 1px solid #e2e8f0; padding: 15px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+    .data-card h4 { margin: 0 0 8px 0; color: #64748b; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; }
+    .math-text { font-family: monospace; font-size: 16px; margin-bottom: 5px; color: #0f172a; }
+    .conclusion { font-weight: bold; font-size: 15px; padding: 5px 10px; border-radius: 4px; display: inline-block; margin-top: 5px; }
+    
+    /* dynamic color conclusions */
+    .bg-green { background-color: #dcfce7; color: #166534; }
+    .bg-yellow { background-color: #fef08a; color: #854d0e; }
+    .bg-red { background-color: #fee2e2; color: #991b1b; }
+    .bg-gray { background-color: #f3f4f6; color: #4b5563; }
+    
+    .text-blue { color: #2563eb; font-weight: bold; }
+    .text-red { color: #e11d48; font-weight: bold; }
+</style>
+</head>
+<body>
+
+<div class="demo-container">
+    <h2>Interactive: Inner Product vs Cosine Similarity</h2>
+    <p style="text-align: center; color: #64748b; font-size: 14px; margin-top: -10px;">Drag the sliders to observe how "angle" and "length" affect similarity</p>
+    
+    <div class="canvas-container">
+        <svg id="vector-svg">
+            <defs>
+                <marker id="arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                    <path d="M 0 0 L 10 5 L 0 10 z" fill="#2563eb" />
+                </marker>
+                <marker id="arrow-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                    <path d="M 0 0 L 10 5 L 0 10 z" fill="#e11d48" />
+                </marker>
+            </defs>
+            <line x1="50%" y1="0" x2="50%" y2="100%" stroke="#e2e8f0" stroke-width="2" stroke-dasharray="5,5"/>
+            <line x1="0" y1="100%" x2="100%" y2="100%" stroke="#94a3b8" stroke-width="2"/>
+            
+            <path id="angle-arc" fill="rgba(37, 99, 235, 0.1)" stroke="#3b82f6" stroke-width="1.5" />
+            <text id="angle-text" x="50%" y="100%" fill="#475569" font-size="14" font-weight="bold"></text>
+
+            <line id="vec-a" x1="50%" y1="100%" x2="50%" y2="100%" stroke="#2563eb" stroke-width="4" marker-end="url(#arrow-blue)" />
+            <text id="label-a" fill="#2563eb" font-weight="bold">Vector A (fixed)</text>
+
+            <line id="vec-b" x1="50%" y1="100%" x2="50%" y2="100%" stroke="#e11d48" stroke-width="4" marker-end="url(#arrow-red)" />
+            <text id="label-b" fill="#e11d48" font-weight="bold">Vector B (variable)</text>
+        </svg>
+    </div>
+
+    <div class="controls">
+        <div class="control-group">
+            <span class="control-label">Vector B Angle (θ)</span>
+            <input type="range" id="slider-angle" min="0" max="180" value="45">
+            <span class="value-display" id="val-angle">45°</span>
+        </div>
+        <div class="control-group">
+            <span class="control-label">Vector B Length (|b|)</span>
+            <input type="range" id="slider-mag" min="1" max="10" step="0.5" value="5">
+            <span class="value-display" id="val-mag">5.0</span>
+        </div>
+    </div>
+
+    <div class="data-panel">
+        <div class="data-card">
+            <h4>1. Inner Product (Dot Product) = Direction × Length</h4>
+            <div class="math-text" id="calc-dot">A·B = |a| × |b| × cos(θ)</div>
+            <div class="math-text" id="res-dot" style="font-weight: bold; font-size: 18px;">Result = 0</div>
+            <div id="insight-dot" class="conclusion bg-gray">Loading conclusion...</div>
+        </div>
+
+        <div class="data-card">
+            <h4>2. Cosine Similarity = Direction Only</h4>
+            <div class="math-text" id="calc-cos">cos(θ) = A·B / (|a| × |b|)</div>
+            <div class="math-text" id="res-cos" style="font-weight: bold; font-size: 18px;">Result = 0</div>
+            <div id="insight-cos" class="conclusion bg-gray">Loading conclusion...</div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // configuration
+    const originX = 300; // half of SVG width (assuming max width 600)
+    const originY = 250; // SVG height
+    const scale = 20; // length scaling factor (1 unit = 20px)
+    const magA = 5; // vector A length is fixed at 5
+    
+    // DOM elements
+    const vecA = document.getElementById('vec-a');
+    const vecB = document.getElementById('vec-b');
+    const labelA = document.getElementById('label-a');
+    const labelB = document.getElementById('label-b');
+    const angleArc = document.getElementById('angle-arc');
+    const angleText = document.getElementById('angle-text');
+    
+    const sliderAngle = document.getElementById('slider-angle');
+    const sliderMag = document.getElementById('slider-mag');
+    const valAngle = document.getElementById('val-angle');
+    const valMag = document.getElementById('val-mag');
+    
+    const calcDot = document.getElementById('calc-dot');
+    const resDot = document.getElementById('res-dot');
+    const insightDot = document.getElementById('insight-dot');
+    
+    const calcCos = document.getElementById('calc-cos');
+    const resCos = document.getElementById('res-cos');
+    const insightCos = document.getElementById('insight-cos');
+
+    // initialize fixed vector A (along X-axis to the right)
+    const endAx = originX + (magA * scale);
+    const endAy = originY;
+    vecA.setAttribute('x2', endAx);
+    vecA.setAttribute('y2', endAy);
+    labelA.setAttribute('x', endAx - 40);
+    labelA.setAttribute('y', endAy - 10);
+
+    function update() {
+        const thetaDeg = parseFloat(sliderAngle.value);
+        const magB = parseFloat(sliderMag.value);
+        
+        // update slider value displays
+        valAngle.innerText = thetaDeg + '°';
+        valMag.innerText = magB.toFixed(1);
+
+        // polar to Cartesian coordinates (note: SVG Y-axis points down, so subtract sin)
+        const thetaRad = thetaDeg * Math.PI / 180;
+        const endBx = originX + (magB * scale * Math.cos(thetaRad));
+        const endBy = originY - (magB * scale * Math.sin(thetaRad));
+
+        // update vector B graphics
+        vecB.setAttribute('x2', endBx);
+        vecB.setAttribute('y2', endBy);
+        labelB.setAttribute('x', endBx + 10);
+        labelB.setAttribute('y', endBy - 10);
+
+        // draw the angle arc
+        const arcRadius = 40;
+        const arcX = originX + arcRadius * Math.cos(thetaRad);
+        const arcY = originY - arcRadius * Math.sin(thetaRad);
+        // SVG Arc parameters
+        const largeArcFlag = thetaDeg > 180 ? 1 : 0;
+        const d = `M ${originX + arcRadius} ${originY} A ${arcRadius} ${arcRadius} 0 ${largeArcFlag} 0 ${arcX} ${arcY} L ${originX} ${originY} Z`;
+        if (thetaDeg > 0) {
+            angleArc.setAttribute('d', d);
+            angleArc.style.display = 'block';
+            angleText.setAttribute('x', originX + 50);
+            angleText.setAttribute('y', originY - 15);
+            angleText.textContent = `θ`;
+        } else {
+            angleArc.style.display = 'none';
+            angleText.textContent = '';
+        }
+
+        // mathematical calculations
+        const cosValue = Math.cos(thetaRad);
+        const dotProduct = magA * magB * cosValue;
+
+        // update panel formulas and results
+        calcDot.innerHTML = `A·B = <span class="text-blue">${magA}</span> × <span class="text-red">${magB.toFixed(1)}</span> × cos(${thetaDeg}°)`;
+        resDot.innerHTML = `Inner Product = ${dotProduct.toFixed(2)}`;
+        
+        calcCos.innerHTML = `cos(${thetaDeg}°) = ${dotProduct.toFixed(2)} / (<span class="text-blue">${magA}</span> × <span class="text-red">${magB.toFixed(1)}</span>)`;
+        resCos.innerHTML = `Direction Similarity = ${cosValue.toFixed(3)}`;
+
+        // update dynamic conclusions (with running metaphor)
+        if (thetaDeg === 0) {
+            insightCos.className = 'conclusion bg-green';
+            insightCos.innerText = '✅ Directions perfectly aligned (most similar) [Running: same direction]';
+            insightDot.className = 'conclusion bg-green';
+            insightDot.innerText = `Maximum value. Not only are directions aligned, but vector B's length (${magB}) amplifies the result.`;
+        } else if (thetaDeg < 90) {
+            insightCos.className = 'conclusion bg-green';
+            insightCos.innerText = '👌 Directions are close (somewhat similar)';
+            insightDot.className = 'conclusion bg-gray';
+            insightDot.innerText = 'Positive value indicates some degree of match.';
+        } else if (thetaDeg === 90) {
+            insightCos.className = 'conclusion bg-yellow';
+            insightCos.innerText = '⏸️ No relation (perpendicular) [Running: going their own ways]';
+            insightDot.className = 'conclusion bg-yellow';
+            insightDot.innerText = 'Inner product drops to zero! Length no longer matters.';
+        } else if (thetaDeg > 90 && thetaDeg < 180) {
+            insightCos.className = 'conclusion bg-red';
+            insightCos.innerText = '❌ Directions diverge (not similar)';
+            insightDot.className = 'conclusion bg-gray';
+            insightDot.innerText = 'Negative value — typically filtered out in recommendation systems.';
+        } else {
+            insightCos.className = 'conclusion bg-red';
+            insightCos.innerText = '🚫 Completely opposite (least similar) [Running: running away from each other]';
+            insightDot.className = 'conclusion bg-red';
+            insightDot.innerText = 'Maximum negative. Completely pulling in opposite directions.';
+        }
+    }
+
+    // bind events
+    sliderAngle.addEventListener('input', update);
+    sliderMag.addEventListener('input', update);
+
+    // initial render
+    update();
+</script>
+
+</body>
+</html>

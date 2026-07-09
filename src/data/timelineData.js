@@ -1,13 +1,25 @@
 export const getTimelineData = (lang) => [
   {
-    id: "explainConvolution", 
+    id: "dl_series", 
     date: '2026.07', 
-    title: lang === 'zh' ? '从零开始彻底搞懂卷积：乘法、内积、卷积' : 'A Complete Guide to Convolution – Multiplication, Dot Product, and Convolution',
+    title: lang === 'zh' ? '深度学习专栏' : 'Deep Learning Series',
     category: 'learning', 
     layout: 'collections', 
-    description: lang === 'zh' ? '一篇写给初学者的卷积完全指南。不需要高深的数学背景，只需要你愿意一步一步跟着算。' : 'A complete beginner\'s guide to convolution. No advanced math background required – just a willingness to follow along step by step.',
-    tags: ['CNN', 'DeepLearning', 'Algorithm']
-  },
+    description: lang === 'zh' ? '一篇写给初学者的深度学习指南。不需要高深的数学背景，只需要你愿意一步一步跟着算。' : 'A complete beginner\'s guide to deep learning. No advanced math background required – just a willingness to follow along step by step.',
+    tags: ['CNN', 'DeepLearning', 'Algorithm'],
+    articles:[
+      { 
+          id: 'dl_explainvector', 
+          title: lang === 'zh' ? '1. 内积（点积）完全指南：从计算到几何，一次搞懂' : 'Inner Product (Dot Product) Complete Guide: From Computation to Geometry', 
+          date: '2026-07-08'
+        },
+        { 
+          id: 'dl_explainConvolution', 
+          title: lang === 'zh' ? '2. 从零开始彻底搞懂卷积：乘法、内积、卷积' : 'A Complete Guide to Convolution – Multiplication, Dot Product, and Convolution', 
+          date: '2026-07-09'
+        }
+      ]
+    },
   {
     id: "zenith_framework_2026", 
     date: '2026.05', 

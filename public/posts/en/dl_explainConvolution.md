@@ -1,11 +1,7 @@
 ---
-
-**Title: From Zero to Hero: A Complete Guide to Convolution – Multiplication, Dot Product, and Convolution**
-
-*Date: 2026-07-08*
-
-*Categories: [Deep Learning]*
-
+title: From Zero to Hero: A Complete Guide to Convolution – Multiplication, Dot Product, and Convolution
+date: 2026-07-08
+categories: [Deep Learning]
 ---
 
 > A complete beginner's guide to convolution. No advanced math background required – just a willingness to follow along step by step.
@@ -32,8 +28,6 @@ After reading this, you'll fully understand:
 - Why we flip and why we slide
 - Why the output length is `len(a) + len(b) - 1`
 - What convolution is used for in the real world
-
----
 
 ## Chapter 1: It All Starts with "Multiplication"
 
@@ -74,52 +68,51 @@ This list has **order** – position 0 is 1, position 1 is 2, position 2 is 3.
 
 Why emphasize order? Because the operations you're about to see depend heavily on it.
 
----
+# Chapter 2: Inner Product (Dot Product) — One-Shot Similarity Detection
 
-## Chapter 2: Dot Product – One-Time Similarity Detection
+If you're unfamiliar with the inner product, check out my previous post for details → [1. Inner Product (Dot Product) Complete Guide: From Computation to Geometry, All Explained](?post=dl_explainvector)
 
-### 2.1 How to Compute the Dot Product
+## 2.1 How to Compute the Inner Product
 
-The rule for dot product: **multiply corresponding positions, then sum everything up.**
+The mnemonic for inner product computation: **Multiply corresponding entries, then sum them all up.**
 
 Given two vectors:
 $$
 \mathbf{a} = [1, 2, 3], \quad \mathbf{b} = [4, 5, 6]
 $$
 
-Their dot product is:
+Their inner product is:
 $$
 \mathbf{a} \cdot \mathbf{b} = 1 \times 4 + 2 \times 5 + 3 \times 6 = 4 + 10 + 18 = 32
 $$
 
-**Critical condition: both vectors must have the same length** – otherwise you can't multiply corresponding positions.
+**Key condition: Both vectors must have the same length** — otherwise, there's no "corresponding entries" to multiply.
 
-### 2.2 Geometric Meaning of the Dot Product
+## 2.2 Geometric Meaning of the Inner Product
 
-Geometrically, the dot product measures **how much two vectors point in the same direction**:
+Geometrically, the inner product measures **how consistent two vectors are in direction**:
 
-- Dot product > 0: roughly the same direction (angle < 90°)
-- Dot product = 0: perpendicular (angle = 90°)
-- Dot product < 0: opposite directions (angle > 90°)
+- Inner product > 0: Directions are roughly the same (angle < 90°)
+- Inner product = 0: Directions are perpendicular (angle = 90°)
+- Inner product < 0: Directions are opposite (angle > 90°)
 
-Simply put: **the larger the dot product, the more similar the two vectors are.**
+In simple terms: ***When the lengths of two vectors are fixed, a larger inner product means more consistent directions = more similar.***
+> However, if lengths can vary, a large inner product might simply be due to long vectors rather than directional similarity.
 
-### 2.3 Use Cases for Dot Product
+## 2.3 Use Cases of the Inner Product
 
 | Scenario | Specific Application |
 |----------|----------------------|
-| Machine Learning | Computing similarity between feature vectors (e.g., recommendation systems) |
-| Physics | Computing work: Work = Force Vector · Displacement Vector |
-| Computer Graphics | Calculating lighting, determining if a surface faces a light source |
-| Signal Processing | Determining if two signals are correlated |
+| Machine Learning | Computing similarity between two feature vectors (e.g., recommendation systems determining how similar your preferences are to others') |
+| Physics | Calculating work: Work = Force Vector · Displacement Vector |
+| Computer Graphics | Computing lighting, determining whether a surface faces a light source |
+| Signal Processing | Determining whether two signals are correlated |
 
-### 2.4 Characteristics of Dot Product
+## 2.4 Characteristics of the Inner Product
 
-- **Two vectors → one number** (information is "compressed")
-- **Computed only once**, no sliding
-- Measures **overall** similarity, not "where" the similarity occurs
-
----
+- **Two vectors → One scalar** (information is "compressed")
+- **Computed only once**, no sliding involved
+- Measures **overall** similarity, without regard to "where the similarity occurs"
 
 ## Chapter 3: Convolution – Local, Sliding Similarity Detection
 
@@ -217,7 +210,7 @@ $$
 
 <div align="center" style="margin: 2rem 0;">
   <iframe 
-    src="/demos/DeepLearning/convolutionen.html" 
+    src="/demos/en/DeepLearning/convolution.html" 
     width="100%" 
     height="600px" 
     style="border: 1px solid #e2e8f0; border-radius: 12px; box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1); background: #ffffff;" 
@@ -238,8 +231,6 @@ Notice the overlap pattern at each slide:
 **Overlap count pattern: 1 → 2 → 2 → 1**
 
 Each output number is the result of "multiply corresponding positions and sum" at that particular overlap position.
-
----
 
 ## Chapter 4: Why is the Output Length len(a) + len(b) - 1?
 
@@ -310,8 +301,6 @@ Verify:
 
 **Pattern: each additional sequence subtracts one more 1.**
 
----
-
 ## Chapter 5: Why Do We Flip?
 
 You may have noticed: before computing convolution, we flipped `h`.
@@ -346,8 +335,6 @@ In deep learning's Convolutional Neural Networks (CNNs), many implementations **
 But it's still called "convolution" – this is a historical artifact. Since flipping doesn't affect the network's learning ability (the network can adjust weights on its own), people took the shortcut.
 
 **Strictly speaking: what deep learning calls "convolution" is actually "cross-correlation".**
-
----
 
 ## Chapter 6: Why Do We Slide?
 
@@ -418,47 +405,9 @@ Position 6: "and" → no match
 
 **The meaning of sliding: I don't need to know where "apple" is – I let the template walk through the entire song and find all positions that resemble it.**
 
----
+## Chapter 7: Real-World Applications
 
-## Chapter 7: Comparison Summary
-
-### 7.1 Core Comparison Table
-
-| Dimension | Multiplication | Dot Product | Convolution |
-|-----------|---------------|-------------|-------------|
-| Operands | number × number | vector · vector | sequence * sequence |
-| Length requirement | none | must be equal | can be unequal |
-| Flip required? | no | no | **must flip one** |
-| Slide required? | no | no | **must slide** |
-| Computation count | 1 multiplication | multiple multiplications + 1 sum | multiple slides, each with multiplications + sum |
-| Result type | a number | a number | a **new sequence** |
-| Result length | 1 | 1 | len(a)+len(b)-1 |
-| Core meaning | scaling | overall similarity | local matching / system response |
-| Commutative? | yes | yes | yes |
-
-### 7.2 Plain English Distinction
-
-> **Multiplication**: number × number = number (scaling)  
-> **Dot Product**: vector · vector = number (overall similarity)  
-> **Convolution**: sequence * sequence = sequence (local similarity at each position)
-
-### 7.3 Relationship Diagram
-
-```text
-         number × number = number  ← Multiplication (simplest)
-              ↓
-         vector · vector = number  ← Dot Product (one-time multiply + sum)
-              ↓
-         sequence * sequence = sequence  ← Convolution (slide many times, dot product each time)
-```
-
-**The essence of convolution: repeat the "dot product" operation many times (once per slide), and line up all the results.**
-
----
-
-## Chapter 8: Real-World Applications
-
-### 8.1 Image Processing (CNN)
+### 7.1 Image Processing (CNN)
 
 In Convolutional Neural Networks, a small "kernel" (e.g., 3×3) slides across the entire image to extract features like edges, textures, and shapes.
 
@@ -467,7 +416,7 @@ In Convolutional Neural Networks, a small "kernel" (e.g., 3×3) slides across th
 - Each slide computes one dot product
 - Result: a "feature map" (recording "how prominent this feature is at each position")
 
-### 8.2 Audio Processing (Reverb/Echo)
+### 7.2 Audio Processing (Reverb/Echo)
 
 ```python
 # Adding echo to audio
@@ -476,28 +425,26 @@ echo_signal = original_audio * room_impulse_response
 
 The room impulse response records "how sound bounces around the room". Convolution combines "sound" with "room characteristics" to produce "sound with echo".
 
-### 8.3 Signal Denoising
+### 7.3 Signal Denoising
 
 A "low-pass filter" (smoothing kernel) convolved with the original signal averages out high-frequency noise, making the signal smoother.
 
-### 8.4 Probability Theory
+### 7.4 Probability Theory
 
 The probability distribution of the sum of two independent random variables = the convolution of their individual probability distributions.
 
-### 8.5 Computer Vision
+### 7.5 Computer Vision
 
 - Edge detection (Sobel operator)
 - Image blurring (average filtering)
 - Image sharpening
 - Feature extraction
 
-### 8.6 Moving Average (Stock Analysis)
+### 7.6 Moving Average (Stock Analysis)
 
 Sliding windows averaging stock prices to smooth out short-term fluctuations and reveal long-term trends – this is essentially convolution (though without flipping).
 
----
-
-## Chapter 9: Common Misconceptions
+## Chapter 8: Common Misconceptions
 
 ### ❌ Misconception 1: "Convolution is multiplication"
 
@@ -519,7 +466,7 @@ Sliding windows averaging stock prices to smooth out short-term fluctuations and
 
 **True but incomplete.** That's only for two sequences. For N sequences, the formula is \( (\sum L_i) - N + 1 \).
 
-## Chapter 10: Remember It with an Everyday Analogy
+## Chapter 9: Remember It with an Everyday Analogy
 
 Imagine you're a **chef**:
 
@@ -529,7 +476,39 @@ Imagine you're a **chef**:
 | **Dot Product** | Your "taste preference" (sweet 5, spicy 3) × dish's "flavor profile" (sweet 4, spicy 6) → total match score = 5×4+3×6=38 points (**overall fit**) |
 | **Convolution** | Using a small "flavor probe" (template) to **slide across** an entire dish, taking a bite at each position and recording "how good this local patch tastes", producing a "flavor distribution map" (**flavor at each position**) |
 
-## Chapter 11: FAQ
+### 9.1 Core Comparison Table
+
+| Dimension | Multiplication | Dot Product | Convolution |
+|-----------|---------------|-------------|-------------|
+| Operands | number × number | vector · vector | sequence * sequence |
+| Length requirement | none | must be equal | can be unequal |
+| Flip required? | no | no | **must flip one** |
+| Slide required? | no | no | **must slide** |
+| Computation count | 1 multiplication | multiple multiplications + 1 sum | multiple slides, each with multiplications + sum |
+| Result type | a number | a number | a **new sequence** |
+| Result length | 1 | 1 | len(a)+len(b)-1 |
+| Core meaning | scaling | overall similarity | local matching / system response |
+| Commutative? | yes | yes | yes |
+
+### 9.2 Plain English Distinction
+
+> **Multiplication**: number × number = number (scaling)  
+> **Dot Product**: vector · vector = number (overall similarity)  
+> **Convolution**: sequence * sequence = sequence (local similarity at each position)
+
+### 9.3 Relationship Diagram
+
+```text
+         number × number = number  ← Multiplication (simplest)
+              ↓
+         vector · vector = number  ← Dot Product (one-time multiply + sum)
+              ↓
+         sequence * sequence = sequence  ← Convolution (slide many times, dot product each time)
+```
+
+**The essence of convolution: repeat the "dot product" operation many times (once per slide), and line up all the results.**
+
+## Chapter 10: FAQ
 
 **Q1: Is convolution commutative?**
 

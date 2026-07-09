@@ -68,7 +68,7 @@ export default function App() {
       
       <Controls lang={lang} setLang={setLang} isEyeCareMode={isEyeCareMode} setIsEyeCareMode={setIsEyeCareMode} setIsEmailModalOpen={setIsEmailModalOpen} />
       
-      <LayoutShell lang={lang} isEyeCareMode={isEyeCareMode}>
+      <LayoutShell lang={lang} isEyeCareMode={isEyeCareMode} showGrid={!selectedItem}>
         <AppContent 
           lang={lang} 
           filter={filter} 

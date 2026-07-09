@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>互动：代数视角下的内积 (坐标轴拆解)</title>
+<style>
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f9fafb; display: flex; flex-direction: column; align-items: center; padding: 20px; color: #333; }
+    .demo-container { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.08); width: 100%; max-width: 700px; display: flex; flex-direction: column; gap: 20px; }
+    h2 { margin: 0; color: #1e293b; text-align: center; }
+    .subtitle { text-align: center; color: #64748b; font-size: 14px; margin-top: -5px; }
+    
+    /* 核心布局：左边图形，右边数据 */
+    .main-content { display: flex; gap: 20px; align-items: stretch; }
+    @media (max-width: 650px) { .main-content { flex-direction: column; } }
+    
+    /* 绘图区 */
+    .canvas-container { flex: 1; background-color: #f8fafc; border-radius: 8px; border: 1px solid #e2e8f0; position: relative; min-height: 350px; overflow: hidden; }
+    svg { width: 100%; height: 100%; cursor: crosshair; }
+    
+    /* 拖拽提示 */
+    .drag-hint { position: absolute; top: 10px; left: 10px; font-size: 12px; color: #64748b; background: rgba(255,255,255,0.8); padding: 4px 8px; border-radius: 4px; pointer-events: none; }
+    
+    /* 数据计算区 */
+    .calc-panel { flex: 1; display: flex; flex-direction: column; gap: 15px; }
+    .dimension-box { padding: 15px; border-radius: 8px; border: 1px solid; }
+    .dim-x { background: #f0fdf4; border-color: #bbf7d0; }
+    .dim-y { background: #eff6ff; border-color: #bfdbfe; }
+    .dim-total { background: #1e293b; border-color: #0f172a; color: white; }
+    
+    .dim-title { font-size: 14px; font-weight: bold; margin-bottom: 8px; color: #475569; }
+    .dim-total .dim-title { color: #cbd5e1; text-transform: uppercase; letter-spacing: 1px; }
+    
+    .math-formula { font-family: monospace; font-size: 18px; }
+    .total-result { font-size: 28px; font-weight: bold; color: #4ade80; margin-top: 5px; }
+    
+    .val-a { color: #3b82f6; font-weight: bold; }
+    .val-b { color: #ef4444; font-weight: bold; }
+</style>
+</head>
+<body>
+
+<div class="demo-container">
+    <h2>互动：为什么“对应位相乘”？</h2>
+    <div class="subtitle">拖动向量 A 和 B 的端点，看坐标系如何拆解内积</div>
+    
+    <div class="main-content">
+        <div class="canvas-container">
+            <div class="drag-hint">拖动实心圆点改变向量</div>
+            <svg id="grid-svg" viewBox="-10 -10 220 220">
+                <defs>
+                    <marker id="arrow-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M 0 1 L 8 5 L 0 9 z" fill="#3b82f6" /></marker>
+                    <marker id="arrow-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M 0 1 L 8 5 L 0 9 z" fill="#ef4444" /></marker>
+                </defs>
+                
+                <g id="grid-lines" stroke="#e2e8f0" stroke-width="1"></g>
+                
+                <line x1="0" y1="200" x2="200" y2="200" stroke="#94a3b8" stroke-width="2"/>
+                <line x1="0" y1="0" x2="0" y2="200" stroke="#94a3b8" stroke-width="2"/>
+                <text x="205" y="205" font-size="10" fill="#64748b">X</text>
+                <text x="-5" y="-5" font-size="10" fill="#64748b">Y</text>
+
+                <rect id="proj-x-a" y="202" height="6" fill="#3b82f6" opacity="0.4" />
+                <rect id="proj-x-b" y="208" height="6" fill="#ef4444" opacity="0.4" />
+                
+                <rect id="proj-y-a" x="-8" width="6" fill="#3b82f6" opacity="0.4" />
+                <rect id="proj-y-b" x="-14" width="6" fill="#ef4444" opacity="0.4" />
+
+                <line id="vec-a" x1="0" y1="200" stroke="#3b82f6" stroke-width="3" marker-end="url(#arrow-blue)" />
+                <circle id="handle-a" r="6" fill="#1d4ed8" style="cursor: grab;" />
+                <text id="label-a" fill="#3b82f6" font-size="12" font-weight="bold">A</text>
+
+                <line id="vec-b" x1="0" y1="200" stroke="#ef4444" stroke-width="3" marker-end="url(#arrow-red)" />
+                <circle id="handle-b" r="6" fill="#b91c1c" style="cursor: grab;" />
+                <text id="label-b" fill="#ef4444" font-size="12" font-weight="bold">B</text>
+                
+                <g stroke="#94a3b8" stroke-width="1" stroke-dasharray="3,3">
+                    <line id="guide-a-x" /> <line id="guide-a-y" />
+                    <line id="guide-b-x" /> <line id="guide-b-y" />
+                </g>
+            </svg>
+        </div>
+
+        <div class="calc-panel">
+            <div class="dimension-box dim-x">
+                <div class="dim-title">1. X轴上的重合度 (横向叠加)</div>
+                <div class="math-formula">
+                    <span class="val-a" id="math-ax">0</span> × <span class="val-b" id="math-bx">0</span> = <strong id="res-x">0</strong>
+                </div>
+            </div>
+            
+            <div class="dimension-box dim-y">
+                <div class="dim-title">2. Y轴上的重合度 (纵向叠加)</div>
+                <div class="math-formula">
+                    <span class="val-a" id="math-ay">0</span> × <span class="val-b" id="math-by">0</span> = <strong id="res-y">0</strong>
+                </div>
+            </div>
+            
+            <div class="dimension-box dim-total">
+                <div class="dim-title">总内积 A · B (汇总)</div>
+                <div class="math-formula">
+                    (<span id="total-x">0</span>) + (<span id="total-y">0</span>)
+                </div>
+                <div class="total-result" id="res-total">0</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const svg = document.getElementById('grid-svg');
+    const gridSize = 20; // 每个网格 20px (代表数值 1)
+    
+    // 初始化向量坐标 (数值系)
+    let state = {
+        A: { x: 4, y: 7 }, // [4, 7]
+        B: { x: 8, y: 3 }  // [8, 3]
+    };
+    
+    let activeHandle = null;
+
+    // 绘制网格线
+    const gridLines = document.getElementById('grid-lines');
+    for(let i = 1; i <= 10; i++) {
+        let pos = i * gridSize;
+        gridLines.innerHTML += `<line x1="${pos}" y1="0" x2="${pos}" y2="200" />`; // 竖线
+        gridLines.innerHTML += `<line x1="0" y1="${200 - pos}" x2="200" y2="${200 - pos}" />`; // 横线
+    }
+
+    // 数值系转 SVG 像素系 (SVG 的 Y 轴是朝下的，需要翻转)
+    function toPx(val, isY = false) {
+        return isY ? (200 - val * gridSize) : (val * gridSize);
+    }
+    // SVG 像素系转数值系 (限制在 0-10 之间)
+    function toVal(px, isY = false) {
+        let val = isY ? (200 - px) / gridSize : px / gridSize;
+        return Math.max(0, Math.min(10, Math.round(val))); // 吸附到整数网格
+    }
+
+    function updateUI() {
+        // A 的像素坐标
+        const pxAx = toPx(state.A.x);
+        const pxAy = toPx(state.A.y, true);
+        
+        // B 的像素坐标
+        const pxBx = toPx(state.B.x);
+        const pxBy = toPx(state.B.y, true);
+
+        // 更新向量线和拖拽手柄
+        document.getElementById('vec-a').setAttribute('x2', pxAx);
+        document.getElementById('vec-a').setAttribute('y2', pxAy);
+        document.getElementById('handle-a').setAttribute('cx', pxAx);
+        document.getElementById('handle-a').setAttribute('cy', pxAy);
+        document.getElementById('label-a').setAttribute('x', pxAx + 8);
+        document.getElementById('label-a').setAttribute('y', pxAy - 8);
+
+        document.getElementById('vec-b').setAttribute('x2', pxBx);
+        document.getElementById('vec-b').setAttribute('y2', pxBy);
+        document.getElementById('handle-b').setAttribute('cx', pxBx);
+        document.getElementById('handle-b').setAttribute('cy', pxBy);
+        document.getElementById('label-b').setAttribute('x', pxBx + 8);
+        document.getElementById('label-b').setAttribute('y', pxBy - 8);
+
+        // 更新辅助虚线
+        document.getElementById('guide-a-x').setAttribute('x1', pxAx); document.getElementById('guide-a-x').setAttribute('y1', pxAy);
+        document.getElementById('guide-a-x').setAttribute('x2', pxAx); document.getElementById('guide-a-x').setAttribute('y2', 200);
+        document.getElementById('guide-a-y').setAttribute('x1', pxAx); document.getElementById('guide-a-y').setAttribute('y1', pxAy);
+        document.getElementById('guide-a-y').setAttribute('x2', 0); document.getElementById('guide-a-y').setAttribute('y2', pxAy);
+        
+        document.getElementById('guide-b-x').setAttribute('x1', pxBx); document.getElementById('guide-b-x').setAttribute('y1', pxBy);
+        document.getElementById('guide-b-x').setAttribute('x2', pxBx); document.getElementById('guide-b-x').setAttribute('y2', 200);
+        document.getElementById('guide-b-y').setAttribute('x1', pxBx); document.getElementById('guide-b-y').setAttribute('y1', pxBy);
+        document.getElementById('guide-b-y').setAttribute('x2', 0); document.getElementById('guide-b-y').setAttribute('y2', pxBy);
+
+        // 更新坐标轴投影色块
+        document.getElementById('proj-x-a').setAttribute('x', 0); document.getElementById('proj-x-a').setAttribute('width', pxAx);
+        document.getElementById('proj-x-b').setAttribute('x', 0); document.getElementById('proj-x-b').setAttribute('width', pxBx);
+        document.getElementById('proj-y-a').setAttribute('y', pxAy); document.getElementById('proj-y-a').setAttribute('height', 200 - pxAy);
+        document.getElementById('proj-y-b').setAttribute('y', pxBy); document.getElementById('proj-y-b').setAttribute('height', 200 - pxBy);
+
+        // 数学计算更新
+        const resX = state.A.x * state.B.x;
+        const resY = state.A.y * state.B.y;
+        const total = resX + resY;
+
+        document.getElementById('math-ax').innerText = state.A.x;
+        document.getElementById('math-bx').innerText = state.B.x;
+        document.getElementById('res-x').innerText = resX;
+
+        document.getElementById('math-ay').innerText = state.A.y;
+        document.getElementById('math-by').innerText = state.B.y;
+        document.getElementById('res-y').innerText = resY;
+
+        document.getElementById('total-x').innerText = resX;
+        document.getElementById('total-y').innerText = resY;
+        document.getElementById('res-total').innerText = `= ${total}`;
+    }
+
+    // 拖拽逻辑
+    function getMousePos(evt) {
+        const CTM = svg.getScreenCTM();
+        return {
+            x: (evt.clientX - CTM.e) / CTM.a,
+            y: (evt.clientY - CTM.f) / CTM.d
+        };
+    }
+
+    svg.addEventListener('mousedown', (e) => {
+        if (e.target.id === 'handle-a') activeHandle = 'A';
+        else if (e.target.id === 'handle-b') activeHandle = 'B';
+    });
+
+    window.addEventListener('mousemove', (e) => {
+        if (!activeHandle) return;
+        const pos = getMousePos(e);
+        state[activeHandle].x = toVal(pos.x, false);
+        state[activeHandle].y = toVal(pos.y, true);
+        updateUI();
+    });
+
+    window.addEventListener('mouseup', () => { activeHandle = null; });
+    
+    // 兼容触摸屏
+    svg.addEventListener('touchstart', (e) => {
+        const touch = e.touches[0];
+        const target = document.elementFromPoint(touch.clientX, touch.clientY);
+        if (target.id === 'handle-a') activeHandle = 'A';
+        else if (target.id === 'handle-b') activeHandle = 'B';
+    });
+    window.addEventListener('touchmove', (e) => {
+        if (!activeHandle) return;
+        e.preventDefault(); // 防止屏幕滚动
+        const touch = e.touches[0];
+        const pos = getMousePos(touch);
+        state[activeHandle].x = toVal(pos.x, false);
+        state[activeHandle].y = toVal(pos.y, true);
+        updateUI();
+    }, {passive: false});
+    window.addEventListener('touchend', () => { activeHandle = null; });
+
+    // 初始化渲染
+    updateUI();
+</script>
+
+</body>
+</html>
