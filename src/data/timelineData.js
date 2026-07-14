@@ -17,6 +17,11 @@ export const getTimelineData = (lang) => [
           id: 'dl_explainConvolution', 
           title: lang === 'zh' ? '2. 从零开始彻底搞懂卷积：乘法、内积、卷积' : '2. A Complete Guide to Convolution – Multiplication, Dot Product, and Convolution', 
           date: '2026-07-09'
+        },
+        { 
+          id: 'dl_explainCNN', 
+          title: lang === 'zh' ? '3. 卷积神经网络' : '2. A Complete Guide to Convolution – Multiplication, Dot Product, and Convolution', 
+          date: '2026-07-09'
         }
       ]
     },
@@ -118,7 +123,7 @@ export const getTimelineData = (lang) => [
   {
     id: "chinese_chess_ai_2022", 
     date: '2022.08', 
-    title: lang === 'zh' ? '中国象棋博弈系统的混合架构实现' : 'Hybrid Architecture Implementation of Chinese Chess AI Game System',
+    title: lang === 'zh' ? '中国象棋博弈系统的混合架构实现' : 'Hybrid Architectural Implementation of a Chinese Chess Game System',
     category: 'project', 
     layout: 'tabs', 
     description: lang === 'zh' ? '本项目完整解构了一个基于高性能全栈架构的中国象棋AI，实现了从传统启发式剪枝搜索到CNN神经网络评估的技术跨越。文章不仅硬核攻克了分布式状态同步难题，更通过Grad-CAM热力图与可视化决策树，带您直观透视博弈大脑底层“算力”与“直觉”的运作逻辑。' : 'Project fully deconstructs a high-performance, full-stack Chinese Chess AI, showcasing the technical leap from traditional heuristic pruning search to Convolutional Neural Network (CNN) evaluation. Beyond rigorously tackling the complexities of distributed state synchronization, it utilizes Grad-CAM heatmaps and visualized decision trees to provide an intuitive look into how the underlying "computing power" and "intuition" of the gaming brain truly operate.',

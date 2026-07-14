@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>互动：2D卷积与公式分解</title>
+<style>
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f8fafc; display: flex; flex-direction: column; align-items: center; padding: 20px; color: #333; margin: 0; }
+    .demo-container { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); width: 100%; max-width: 900px; }
+    h2 { margin-top: 0; color: #1e293b; text-align: center; }
+    .subtitle { text-align: center; color: #64748b; font-size: 14px; margin-bottom: 25px; }
+    
+    /* 上半部分：图像区 */
+    .vision-area { display: flex; gap: 30px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px; }
+    .grid-panel { display: flex; flex-direction: column; align-items: center; }
+    .panel-title { font-size: 15px; font-weight: bold; color: #475569; margin-bottom: 10px; }
+    
+    /* 网格容器 */
+    .grid-container { display: grid; gap: 1px; background: #cbd5e1; border: 2px solid #94a3b8; padding: 1px; position: relative; }
+    .cell { width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; font-size: 9px; color: transparent; transition: outline 0.1s; cursor: crosshair; }
+    .cell:hover { color: rgba(0,0,0,0.3); }
+    .out-cell { width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: bold; color: transparent; transition: all 0.2s; cursor: crosshair; }
+    .out-cell:hover { color: #000; }
+    
+    /* 高亮状态 */
+    .active-window { outline: 2px solid #3b82f6; outline-offset: -1px; z-index: 10; position: relative; }
+    .active-out { outline: 2px solid #ef4444; z-index: 10; position: relative; transform: scale(1.1); box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+
+    /* 下半部分：公式分解面板 */
+    .breakdown-panel { background: #1e293b; border-radius: 8px; padding: 20px; display: flex; flex-direction: column; align-items: center; gap: 15px; margin-bottom: 20px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1); }
+    .breakdown-title { color: #94a3b8; font-size: 14px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
+    
+    .equation-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px 20px; font-family: monospace; font-size: 16px; color: white; text-align: center; width: 100%; max-width: 600px; }
+    .eq-item { background: rgba(255,255,255,0.05); padding: 5px 10px; border-radius: 4px; display: flex; justify-content: center; gap: 5px; }
+    .highlight-k { color: #fca5a5; font-weight: bold; }
+    .highlight-p { color: #93c5fd; font-weight: bold; }
+    
+    .final-sum { font-size: 24px; font-weight: bold; color: #4ade80; margin-top: 10px; padding-top: 15px; border-top: 1px dashed #475569; width: 100%; text-align: center; font-family: monospace; }
+    .final-sum.neg { color: #f87171; }
+    .final-sum.zero { color: #cbd5e1; }
+
+    /* 控制器 */
+    .controls { display: flex; align-items: center; gap: 15px; background: #f1f5f9; padding: 15px 25px; border-radius: 8px; border: 1px solid #e2e8f0; }
+    button { padding: 10px 25px; font-size: 15px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; color: white; background: #3b82f6; transition: 0.2s; }
+    button:hover { background: #2563eb; }
+    button.playing { background: #ef4444; }
+    input[type=range] { flex-grow: 1; cursor: pointer; height: 6px; }
+</style>
+</head>
+<body>
+
+<div class="demo-container">
+    <h2>真实图像卷积扫描 (特征 "5")</h2>
+    <div class="subtitle">上方展示滑动扫描过程，下方展示 9 项乘加运算的精确分解</div>
+    
+    <div class="vision-area">
+        <div class="grid-panel">
+            <div class="panel-title">输入图片 (14x14)</div>
+            <div class="grid-container" id="input-grid" style="grid-template-columns: repeat(14, 1fr);"></div>
+        </div>
+
+        <div class="grid-panel">
+            <div class="panel-title">特征输出地图 (12x12)</div>
+            <div class="grid-container" id="output-grid" style="grid-template-columns: repeat(12, 1fr);"></div>
+        </div>
+    </div>
+
+    <div class="breakdown-panel">
+        <div class="breakdown-title">当前 3x3 窗口的数学计算分解 ( 核 × 像素 )</div>
+        <div class="equation-grid" id="eq-grid">
+            </div>
+        <div class="final-sum" id="final-sum">计算得分 = 0</div>
+    </div>
+
+    <div class="controls">
+        <button id="playBtn" onclick="togglePlay()">自动播放</button>
+        <span style="font-size: 14px; font-weight: bold; color: #64748b;">进度</span>
+        <input type="range" id="stepSlider" min="0" max="143" value="0" oninput="manualStep()">
+        <span style="font-size: 14px; font-family: monospace; color: #475569;" id="step-display">0/143</span>
+    </div>
+</div>
+
+<script>
+    // MNIST 提取的 "5"，0=背景，255=笔迹
+    const imgData = [
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,255,255,255,255,255,0,0,0,0,0,0],
+        [0,0,0,255,200,100,100,50,0,0,0,0,0,0],
+        [0,0,0,255,50,0,0,0,0,0,0,0,0,0],
+        [0,0,0,255,255,255,200,50,0,0,0,0,0,0],
+        [0,0,0,100,50,50,255,255,50,0,0,0,0,0],
+        [0,0,0,0,0,0,0,100,255,0,0,0,0,0],
+        [0,0,0,0,0,0,0,50,255,0,0,0,0,0],
+        [0,0,0,0,0,0,0,50,255,0,0,0,0,0],
+        [0,0,0,200,50,0,100,255,0,0,0,0,0,0],
+        [0,0,0,255,200,200,255,200,0,0,0,0,0,0],
+        [0,0,0,100,255,255,200,50,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+    ];
+    
+    // 垂直边缘检测核
+    const kernel = [[-1, 2, -1], [-1, 2, -1], [-1, 2, -1]];
+    const inSize = 14;
+    const kSize = 3;
+    const outSize = inSize - kSize + 1;
+    const totalSteps = outSize * outSize;
+
+    let currentStep = 0;
+    let isPlaying = false;
+    let playTimer = null;
+
+    const outData = new Array(totalSteps).fill(0);
+    let maxAbsVal = 1;
+
+    // 预计算所有的得分
+    for (let r = 0; r < outSize; r++) {
+        for (let c = 0; c < outSize; c++) {
+            let sum = 0;
+            for (let kr = 0; kr < kSize; kr++) {
+                for (let kc = 0; kc < kSize; kc++) {
+                    sum += imgData[r+kr][c+kc] * kernel[kr][kc];
+                }
+            }
+            outData[r*outSize + c] = sum;
+            if (Math.abs(sum) > maxAbsVal) maxAbsVal = Math.abs(sum);
+        }
+    }
+
+    function init() {
+        const inGrid = document.getElementById('input-grid');
+        const outGrid = document.getElementById('output-grid');
+        const eqGrid = document.getElementById('eq-grid');
+        
+        // 渲染输入图片
+        for (let r = 0; r < inSize; r++) {
+            for (let c = 0; c < inSize; c++) {
+                const val = imgData[r][c];
+                const cVal = 255 - val; 
+                inGrid.innerHTML += `<div class="cell" id="in-${r}-${c}" style="background-color: rgb(${cVal},${cVal},${cVal});">${val}</div>`;
+            }
+        }
+        
+        // 渲染输出占位
+        for (let i = 0; i < totalSteps; i++) {
+            outGrid.innerHTML += `<div class="out-cell" id="out-${i}"></div>`;
+        }
+
+        // 渲染公式分解占位
+        for (let i = 0; i < 9; i++) {
+            eqGrid.innerHTML += `<div class="eq-item" id="eq-${i}"></div>`;
+        }
+        
+        updateState();
+    }
+
+    function updateState() {
+        const row = Math.floor(currentStep / outSize);
+        const col = currentStep % outSize;
+
+        // 清除旧高亮
+        document.querySelectorAll('.active-window').forEach(el => el.classList.remove('active-window'));
+        document.querySelectorAll('.active-out').forEach(el => el.classList.remove('active-out'));
+
+        // 更新输入高亮和公式分解
+        let localSum = 0;
+        for (let kr = 0; kr < kSize; kr++) {
+            for (let kc = 0; kc < kSize; kc++) {
+                const r = row + kr;
+                const c = col + kc;
+                document.getElementById(`in-${r}-${c}`).classList.add('active-window');
+                
+                const pVal = imgData[r][c];
+                const kVal = kernel[kr][kc];
+                
+                // 更新算式格子
+                const idx = kr * 3 + kc;
+                const eqItem = document.getElementById(`eq-${idx}`);
+                eqItem.innerHTML = `(<span class="highlight-k">${kVal}</span>×<span class="highlight-p">${pVal}</span>)`;
+            }
+        }
+
+        // 更新输出地图颜色
+        for (let i = 0; i <= currentStep; i++) {
+            const outCell = document.getElementById(`out-${i}`);
+            const val = outData[i];
+            
+            let bgStr = '';
+            if (val > 0) {
+                const intensity = Math.floor((val / maxAbsVal) * 255);
+                bgStr = `rgb(${255-intensity}, 255, ${255-intensity})`;
+            } else if (val < 0) {
+                const intensity = Math.floor((Math.abs(val) / maxAbsVal) * 255);
+                bgStr = `rgb(255, ${255-intensity}, ${255-intensity})`;
+            } else {
+                bgStr = '#f1f5f9';
+            }
+            
+            outCell.style.backgroundColor = bgStr;
+            outCell.innerText = Math.round(val);
+            outCell.title = `得分: ${Math.round(val)}`;
+            outCell.style.color = (Math.abs(val) > maxAbsVal * 0.5) ? 'white' : 'transparent';
+            
+            if (i === currentStep) {
+                outCell.classList.add('active-out');
+                outCell.style.color = (Math.abs(val) > maxAbsVal * 0.5) ? 'white' : 'black';
+            }
+        }
+
+        // 更新总分及状态
+        const totalScore = outData[currentStep];
+        const sumEl = document.getElementById('final-sum');
+        sumEl.innerText = `最终得出特征分数 = ${totalScore}`;
+        
+        sumEl.className = 'final-sum';
+        if (totalScore > 0) sumEl.classList.add('pos');
+        else if (totalScore < 0) sumEl.classList.add('neg');
+        else sumEl.classList.add('zero');
+
+        document.getElementById('stepSlider').value = currentStep;
+        document.getElementById('step-display').innerText = `${currentStep}/${totalSteps-1}`;
+    }
+
+    function manualStep() {
+        if (isPlaying) togglePlay(); 
+        currentStep = parseInt(document.getElementById('stepSlider').value);
+        updateState();
+    }
+
+    function togglePlay() {
+        const btn = document.getElementById('playBtn');
+        if (isPlaying) {
+            clearInterval(playTimer);
+            btn.innerText = '自动播放';
+            btn.classList.remove('playing');
+        } else {
+            if (currentStep === totalSteps - 1) currentStep = 0; 
+            btn.innerText = '暂停播放';
+            btn.classList.add('playing');
+            playTimer = setInterval(() => {
+                if (currentStep < totalSteps - 1) {
+                    currentStep++;
+                    updateState();
+                } else {
+                    togglePlay(); 
+                }
+            }, 60); 
+        }
+        isPlaying = !isPlaying;
+    }
+
+    init();
+</script>
+</body>
+</html>

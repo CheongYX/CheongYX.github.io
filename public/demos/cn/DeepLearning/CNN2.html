@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>互动：CNN 宏观推理流水线</title>
+<style>
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f8fafc; display: flex; flex-direction: column; align-items: center; padding: 20px; color: #333; margin: 0; }
+    .demo-container { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); width: 100%; max-width: 900px; text-align: center; }
+    h2 { margin-top: 0; color: #1e293b; }
+    .subtitle { color: #64748b; font-size: 15px; margin-bottom: 30px; }
+
+    /* 流水线容器 */
+    .pipeline-container { display: flex; flex-direction: column; gap: 20px; position: relative; padding-bottom: 20px; }
+    
+    /* 每一个阶段的卡片 */
+    .stage-card { background: #f1f5f9; border: 2px solid #e2e8f0; border-radius: 10px; padding: 20px; opacity: 0.3; transform: translateY(20px); transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); position: relative; overflow: hidden; display: none; }
+    .stage-card.active { opacity: 1; transform: translateY(0); display: block; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+    .stage-card.past { opacity: 0.6; display: block; }
+    
+    .stage-title { font-size: 18px; font-weight: bold; color: #0f172a; margin-bottom: 10px; display: flex; justify-content: center; align-items: center; gap: 10px; }
+    .stage-desc { font-size: 14px; color: #475569; margin-bottom: 20px; }
+
+    /* 阶段 1：输入 */
+    .input-img { width: 80px; height: 80px; background: #333; color: white; display: flex; align-items: center; justify-content: center; font-size: 60px; font-weight: bold; font-family: monospace; border-radius: 8px; margin: 0 auto; box-shadow: 0 4px 6px rgba(0,0,0,0.2); }
+
+    /* 阶段 2：多核特征提取 */
+    .feature-maps { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+    .map-box { background: white; border: 1px solid #cbd5e1; padding: 10px; border-radius: 6px; width: 120px; }
+    .map-title { font-size: 12px; font-weight: bold; margin-bottom: 5px; color: #3b82f6; }
+    .map-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; }
+    .m-cell { width: 20px; height: 20px; background: #e2e8f0; border-radius: 2px; }
+    /* 模拟激活的热力图颜色 */
+    .c-v { background: #ef4444 !important; } /* 红色代表垂直特征激活 */
+    .c-h { background: #3b82f6 !important; } /* 蓝色代表水平特征激活 */
+    .c-c { background: #10b981 !important; } /* 绿色代表弧线特征激活 */
+
+    /* 阶段 3：展平 Flatten */
+    .flatten-area { display: flex; justify-content: center; align-items: center; gap: 20px; }
+    .flatten-array { display: flex; gap: 2px; background: #1e293b; padding: 5px; border-radius: 6px; flex-wrap: wrap; max-width: 400px; justify-content: center; }
+    .f-cell { width: 12px; height: 30px; border-radius: 2px; background: #334155; animation: pulse 1.5s infinite alternate; }
+
+    /* 阶段 4：陪审团 FC 层 */
+    .jury-area { display: flex; justify-content: center; align-items: center; gap: 40px; }
+    .nodes-col { display: flex; flex-direction: column; gap: 10px; }
+    .node { width: 30px; height: 30px; border-radius: 50%; background: #94a3b8; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    .node-active { background: #fbbf24; box-shadow: 0 0 10px #fbbf24; }
+    
+    .connection-lines { width: 100px; height: 100px; background: repeating-linear-gradient( 45deg, transparent, transparent 10px, rgba(148, 163, 184, 0.2) 10px, rgba(148, 163, 184, 0.2) 11px ); opacity: 0.5; }
+
+    /* 阶段 5：输出概率 */
+    .prob-chart { display: flex; align-items: flex-end; justify-content: center; gap: 15px; height: 120px; border-bottom: 2px solid #cbd5e1; padding-bottom: 5px; }
+    .bar-group { display: flex; flex-direction: column; align-items: center; gap: 5px; }
+    .bar { width: 30px; background: #cbd5e1; border-radius: 4px 4px 0 0; transition: height 1s cubic-bezier(0.4, 0, 0.2, 1); height: 0; }
+    .bar-group.winner .bar { background: #4ade80; }
+    .bar-label { font-weight: bold; font-family: monospace; color: #475569; }
+    .bar-val { font-size: 12px; color: #64748b; font-weight: bold; }
+
+    /* 控制器 */
+    .controls { margin-top: 30px; }
+    button { padding: 12px 30px; font-size: 16px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; color: white; background: #3b82f6; transition: 0.2s; box-shadow: 0 4px 6px rgba(59,130,246,0.3); }
+    button:hover { background: #2563eb; transform: translateY(-2px); }
+    button:disabled { background: #94a3b8; box-shadow: none; cursor: not-allowed; transform: none; }
+
+    @keyframes pulse { from { opacity: 0.5; } to { opacity: 1; } }
+</style>
+</head>
+<body>
+
+<div class="demo-container">
+    <h2>CNN 破案流水线</h2>
+    <div class="subtitle">从像素输入到陪审团投票，见证数字 "5" 的诞生</div>
+
+    <div class="pipeline-container" id="pipeline">
+        
+        <div class="stage-card" id="stage-0">
+            <div class="stage-title">🎯 阶段 1：接收原始像素</div>
+            <div class="stage-desc">将手写画面转化为数字矩阵，进入网络。</div>
+            <div class="input-img">5</div>
+        </div>
+
+        <div class="stage-card" id="stage-1">
+            <div class="stage-title">🔍 阶段 2：多侦探并行提取线索 (卷积层)</div>
+            <div class="stage-desc">32 个卷积核同时工作。核 A 找垂直线，核 B 找水平线，核 C 找弧线... 得到多张“特征地图”。</div>
+            <div class="feature-maps">
+                <div class="map-box">
+                    <div class="map-title" style="color:#ef4444;">侦探A：找垂直线</div>
+                    <div class="map-grid">
+                        <div class="m-cell c-v"></div><div class="m-cell"></div><div class="m-cell"></div><div class="m-cell"></div>
+                        <div class="m-cell c-v"></div><div class="m-cell"></div><div class="m-cell"></div><div class="m-cell c-v"></div>
+                        <div class="m-cell"></div><div class="m-cell"></div><div class="m-cell"></div><div class="m-cell c-v"></div>
+                    </div>
+                </div>
+                <div class="map-box">
+                    <div class="map-title" style="color:#3b82f6;">侦探B：找水平线</div>
+                    <div class="map-grid">
+                        <div class="m-cell"></div><div class="m-cell c-h"></div><div class="m-cell c-h"></div><div class="m-cell c-h"></div>
+                        <div class="m-cell"></div><div class="m-cell c-h"></div><div class="m-cell c-h"></div><div class="m-cell"></div>
+                        <div class="m-cell"></div><div class="m-cell"></div><div class="m-cell"></div><div class="m-cell"></div>
+                    </div>
+                </div>
+                <div class="map-box">
+                    <div class="map-title" style="color:#10b981;">侦探C：找弧线</div>
+                    <div class="map-grid">
+                        <div class="m-cell"></div><div class="m-cell"></div><div class="m-cell"></div><div class="m-cell"></div>
+                        <div class="m-cell"></div><div class="m-cell"></div><div class="m-cell"></div><div class="m-cell c-c"></div>
+                        <div class="m-cell"></div><div class="m-cell c-c"></div><div class="m-cell c-c"></div><div class="m-cell c-c"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="stage-card" id="stage-2">
+            <div class="stage-title">📏 阶段 3：线索打包展平 (Flatten)</div>
+            <div class="stage-desc">把所有立体的特征地图拍扁，首尾相连，变成一根长长的一维数据线索链。</div>
+            <div class="flatten-area">
+                <div class="flatten-array">
+                    <script>
+                        for(let i=0; i<30; i++) {
+                            const colors = ['#ef4444', '#3b82f6', '#10b981', '#334155', '#334155'];
+                            const c = colors[Math.floor(Math.random()*colors.length)];
+                            document.write(`<div class="f-cell" style="background:${c}; animation-delay: ${Math.random()}s"></div>`);
+                        }
+                    </script>
+                </div>
+            </div>
+        </div>
+
+        <div class="stage-card" id="stage-3">
+            <div class="stage-title">⚖️ 阶段 4：陪审团评估 (全连接层)</div>
+            <div class="stage-desc">线索链传入陪审团大脑。权重被触发：“左上短竖线 + 顶部横线 + 右下弧线” → 强烈刺激特定神经元！</div>
+            <div class="jury-area">
+                <div class="nodes-col">
+                    <div class="node node-active"></div><div class="node"></div><div class="node node-active"></div><div class="node"></div>
+                </div>
+                <div class="connection-lines"></div>
+                <div class="nodes-col">
+                    <div class="node"></div><div class="node node-active" style="transform:scale(1.2);"></div><div class="node"></div>
+                </div>
+                <div class="connection-lines"></div>
+                <div class="nodes-col">
+                    <div class="node"></div><div class="node node-active" style="transform:scale(1.5); background:#4ade80; box-shadow:0 0 15px #4ade80; border-color:#22c55e;"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="stage-card" id="stage-4">
+            <div class="stage-title">🏆 阶段 5：最终宣判 (输出层 / Softmax)</div>
+            <div class="stage-desc">陪审团进行最终打分，转化为 0-9 的概率分布。数字 "5" 的概率一骑绝尘！</div>
+            <div class="prob-chart">
+                <div class="bar-group"><div class="bar-val">1%</div><div class="bar" id="bar-0"></div><div class="bar-label">0</div></div>
+                <div class="bar-group"><div class="bar-val">0%</div><div class="bar" id="bar-1"></div><div class="bar-label">1</div></div>
+                <div class="bar-group"><div class="bar-val">4%</div><div class="bar" id="bar-2"></div><div class="bar-label">2</div></div>
+                <div class="bar-group"><div class="bar-val">12%</div><div class="bar" id="bar-3"></div><div class="bar-label">3</div></div>
+                <div class="bar-group"><div class="bar-val">0%</div><div class="bar" id="bar-4"></div><div class="bar-label">4</div></div>
+                <div class="bar-group winner"><div class="bar-val" style="color:#16a34a; font-size:16px;">98%</div><div class="bar" id="bar-5"></div><div class="bar-label" style="color:#16a34a; font-size:18px;">5</div></div>
+                <div class="bar-group"><div class="bar-val">5%</div><div class="bar" id="bar-6"></div><div class="bar-label">6</div></div>
+                <div class="bar-group"><div class="bar-val">0%</div><div class="bar" id="bar-7"></div><div class="bar-label">7</div></div>
+                <div class="bar-group"><div class="bar-val">2%</div><div class="bar" id="bar-8"></div><div class="bar-label">8</div></div>
+                <div class="bar-group"><div class="bar-val">3%</div><div class="bar" id="bar-9"></div><div class="bar-label">9</div></div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="controls">
+        <button id="nextBtn" onclick="nextStage()">开始推理 (进入下一层)</button>
+    </div>
+</div>
+
+<script>
+    let currentStage = -1;
+    const totalStages = 5;
+
+    function nextStage() {
+        currentStage++;
+        
+        // 将之前的卡片变暗
+        if(currentStage > 0) {
+            document.getElementById(`stage-${currentStage-1}`).classList.add('past');
+        }
+
+        // 显示当前卡片
+        const currentCard = document.getElementById(`stage-${currentStage}`);
+        currentCard.classList.add('active');
+
+        // 特殊动画触发
+        if (currentStage === 4) {
+            // 触发柱状图动画
+            setTimeout(() => {
+                document.getElementById('bar-0').style.height = '10px';
+                document.getElementById('bar-1').style.height = '0px';
+                document.getElementById('bar-2').style.height = '20px';
+                document.getElementById('bar-3').style.height = '40px';
+                document.getElementById('bar-4').style.height = '2px';
+                document.getElementById('bar-5').style.height = '110px';
+                document.getElementById('bar-6').style.height = '25px';
+                document.getElementById('bar-7').style.height = '5px';
+                document.getElementById('bar-8').style.height = '15px';
+                document.getElementById('bar-9').style.height = '18px';
+            }, 100);
+        }
+
+        // 按钮状态更新
+        const btn = document.getElementById('nextBtn');
+        if (currentStage === totalStages - 1) {
+            btn.innerText = "推理完成！";
+            btn.disabled = true;
+        } else {
+            btn.innerText = `继续传输数据 (进入阶段 ${currentStage + 2})`;
+        }
+        
+        // 自动向下滚动，确保新阶段可见
+        currentCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    // 初始展示第一阶段
+    nextStage();
+</script>
+
+</body>
+</html>
