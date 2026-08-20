@@ -8,7 +8,7 @@ import AppContent from './components/AppLayout/AppContent';
 import { getTimelineData } from './data/timelineData';
 
 export default function App() {
-  const [lang, setLang] = useState('zh');
+  const [lang, setLang] = useState('en');
   const [filter, setFilter] = useState('all');
   const [isEmailModalOpen, setIsEmailModalOpen] = useState(false);
   const [isEyeCareMode, setIsEyeCareMode] = useState(false); 
@@ -29,7 +29,7 @@ export default function App() {
   const [selectedItem, setSelectedItem] = useState(() => {
     const params = new URLSearchParams(window.location.search);
     const postId = params.get('post');
-    return getPostById(getTimelineData('zh'), postId);
+    return getPostById(getTimelineData('en'), postId);
   });
 
   useEffect(() => {
