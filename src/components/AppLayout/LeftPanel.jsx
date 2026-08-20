@@ -69,7 +69,6 @@ export default function LeftPanel({ lang }) {
               >
                 LinkedIn
               </a>
-              
               <a 
                 href="https://github.com/CheongYX" 
                 target="_blank" 
@@ -79,6 +78,14 @@ export default function LeftPanel({ lang }) {
                 GitHub
               </a>
 
+              <a 
+                href="https://cheongyx.github.io/CV-CYX/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="px-4 py-2 bg-indigo-500/20 hover:bg-indigo-500/40 border border-indigo-500/30 text-white text-sm font-bold rounded-full transition-all hover:-translate-y-1"
+              >
+                {lang === 'zh' ? '简历' : 'my-CV'}
+              </a>
               <div className="flex items-center gap-2 text-slate-400 text-xs font-bold ml-2">
                 <MapPin size={14} /> <span>{t.location}</span>
               </div>

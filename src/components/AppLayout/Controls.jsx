@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Eye, EyeOff, FileText, ChevronUp } from 'lucide-react'; // ✨ 移除了 Mail，加入了 FileText
+import { Eye, EyeOff, ChevronUp } from 'lucide-react'; 
 
-export default function Controls({ lang, setLang, isEyeCareMode, setIsEyeCareMode }) { // ✨ 移除了 setIsEmailModalOpen
+export default function Controls({ lang, setLang, isEyeCareMode, setIsEyeCareMode }) {
   const [showTopBtn, setShowTopBtn] = useState(false);
 
   useEffect(() => {
@@ -33,16 +33,6 @@ export default function Controls({ lang, setLang, isEyeCareMode, setIsEyeCareMod
         {isEyeCareMode ? <EyeOff size={20}/> : <Eye size={20}/>}
       </button>
 
-      {/* ✨ 替换后的 CV 悬浮按钮 */}
-      <a 
-        href="https://cheongyx.github.io/CV-CYX/" 
-        target="_blank" 
-        rel="noopener noreferrer"
-        title={lang === 'zh' ? '查看我的简历' : 'View My CV'}
-        className="w-14 h-14 rounded-full bg-gradient-to-br from-indigo-600 to-purple-600 text-white flex items-center justify-center shadow-[0_8px_32px_rgba(99,102,241,0.4)] transition-all hover:scale-110"
-      >
-        <FileText size={24} className="hover:animate-bounce" />
-      </a>
     </div>
   );
 }
