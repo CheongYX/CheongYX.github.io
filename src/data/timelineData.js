@@ -5,8 +5,17 @@ export const getTimelineData = (lang) => [
     title: lang === 'zh' ? '从算法到宏观：出海旁听录' : 'From Algorithms to Macro: Notes on Going Global',
     category: 'life', 
     layout: 'tabs', 
-    description: lang === 'zh' ? '作为一个习惯了跑代码的理工女，我意外混入了港大 CEO 俱乐部的出海战略局开启观察者模式。这篇笔记用极客视角的底层逻辑，重新“翻译”了地缘政治、半导体与资产配置等宏观命题。' : 'As a STEM girl used to running code, I slipped into a CEO global strategy class to activate my observer mode. This post translates macro concepts like geopolitics and asset allocation into the underlying logic of a geek\'s perspective.',
+    description: lang === 'zh' ? '作为一个习惯了跑代码的理工女，我意外混入了港大 CEO club 的出海战略局开启旁听者模式。这篇笔记用极客视角的底层逻辑，重新“翻译”了地缘政治、半导体与资产配置等宏观命题。' : 'As a STEM girl used to running code, I slipped into a CEO global strategy class to activate my observer mode. This post translates macro concepts like geopolitics and asset allocation into the underlying logic of a geek\'s perspective.',
     tags: ['Macroeconomics', 'ASEAN Observation', 'Cognitive Refactor']
+  },
+  {
+    id: "life_WhyComplexSystemCycle", 
+    date: '2026.08', 
+    title: lang === 'zh' ? '在全球顶级战略峰会上当一只“墙上的苍蝇”' : 'A Fly on the Wall at a Top-Tier Strategy Summit',
+    category: 'life', 
+    layout: 'tabs', 
+    description: lang === 'zh' ? '习惯了在确定的逻辑模型中寻找答案的我，旁听了一场全球顶级智库的闭门战略局。本文将热力学现实、复杂系统周期与金融泡沫，重新解构为关于系统资源、负反馈机制与鲁棒性的跨界思考。' : 'A reflection on a top-tier closed-door strategy seminar, translating macro-finance, complexity science, and thermodynamic reality into system architecture metaphors. An exploration of how to decode the world\'s non-linear chaos through common sense, exception handling, and system resilience.',
+    tags: ['Complexity Science', 'Mental Models', 'System Architecture']
   },
   {
     id: "dl_series", 
