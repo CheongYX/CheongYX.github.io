@@ -1,4 +1,13 @@
 export const getTimelineData = (lang) => [
+    {
+    id: "life_CEOGlobalizationClass", 
+    date: '2026.08', 
+    title: lang === 'zh' ? '从算法到宏观：出海旁听录' : 'From Algorithms to Macro: Notes on Going Global',
+    category: 'life', 
+    layout: 'tabs', 
+    description: lang === 'zh' ? '作为一个习惯了跑代码的理工女，我意外混入了港大 CEO 俱乐部的出海战略局开启观察者模式。这篇笔记用极客视角的底层逻辑，重新“翻译”了地缘政治、半导体与资产配置等宏观命题。' : 'As a STEM girl used to running code, I slipped into a CEO global strategy class to activate my observer mode. This post translates macro concepts like geopolitics and asset allocation into the underlying logic of a geek\'s perspective.',
+    tags: ['Macroeconomics', 'ASEAN Observation', 'Cognitive Refactor']
+  },
   {
     id: "dl_series", 
     date: '2026.07', 
