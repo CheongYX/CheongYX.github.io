@@ -5,7 +5,7 @@ export const getTimelineData = (lang) => [
     title: lang === 'zh' ? '课外阅读：《焦虑的人》' : 'Reading: Anxious People',
     category: 'reading', 
     layout: 'tabs', 
-    description: lang === 'zh' ? '《焦虑的人》-[瑞典] 弗雷德里克·巴克曼。人生并没有附带说明书，每个人都是第一次做人。所谓的“搞砸”，也许只是我们在灰色的现实里，一遍一遍地排除错误答案罢了。' : 'Anxious People" by Fredrik Backman. Life doesn\'t come with a manual, and everyone is doing this for the first time. Making mistakes is simply our way of eliminating wrong answers in the gray areas of reality.',
+    description: lang === 'zh' ? '《焦虑的人》-[瑞典] 弗雷德里克·巴克曼。人生并没有附带说明书，每个人都是第一次做人。所谓的“搞砸”，也许只是我们在灰色的现实里，一遍一遍地排除错误答案罢了。' : '"Anxious People" by Fredrik Backman. Life doesn\'t come with a manual, and everyone is doing this for the first time. Making mistakes is simply our way of eliminating wrong answers in the gray areas of reality.',
     tags: ['Philosophy', 'Psychology']
   },
     {

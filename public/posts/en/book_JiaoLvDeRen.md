@@ -14,7 +14,7 @@ To be honest, when I first opened *Anxious People*, I had to read it with a lot 
 
 Author Fredrik Backman's early narrative is extremely erratic, even a bit neurotic. A terrible bank robbery, a group of weird hostages trapped together—everyone is complaining and struggling in their own world, doing absurd things that are hard to understand. When I first started reading, this fragmented chaos made it hard to get into the zone.
 
-But as the story progressed to the middle and later stages, a huge sense of satisfaction kicked in. Those seemingly random chit-chats and absurd coincidences suddenly snapped perfectly into place like scattered puzzle pieces. When all the clues came full circle, accompanied by that "owee, so that's what it is!" realization popping up in my mind, I gradually realized: what this book is truly about isn't a crime at all, but rather us—this group of adults who look decent on the outside but are constantly on the verge of losing control.
+But as the story progressed to the middle and later stages, a huge sense of satisfaction kicked in. Those seemingly random chit-chats and absurd coincidences suddenly snapped perfectly into place like scattered puzzle pieces. When all the clues came full circle, accompanied by that "owee, so that's what it is!" realization popping up in my mind, I gradually realized: what this book is truly about isn't a crime at all, but rather us this group of adults who look decent on the outside but are constantly on the verge of losing control.
 
 ## **1. Why Do We Crave "A Sense of Distance"?**
 
