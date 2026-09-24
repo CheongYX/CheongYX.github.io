@@ -1,4 +1,13 @@
 export const getTimelineData = (lang) => [
+  {
+    id: "life_CharteredFlights", 
+    date: '2026.09', 
+    title: lang === 'zh' ? '2022留华包机：四年后正中眉心的“回旋镖”' : 'The 2022 Chartered Flights: A "Boomerang" Four Years Later',
+    category: 'life', 
+    layout: 'tabs', 
+    description: lang === 'zh' ? '2022年疫情期间，作为留华包机的学生助理，我与朋友手搓了一个返校SOP网页并写了自动化踢人脚本。四年后，这个无心插柳的项目像回旋镖一样，以一种极其温暖的方式跨越时空击中了我。' : 'During the 2022 pandemic, as a Student Assistant for chartered flights, a friend and I built a return-to-school SOP webpage and automation scripts. Four years later, this project hit me like a boomerang in the most heartwarming way.',
+    tags: ['Personal Growth', 'Tech for Good', 'Memory']
+  },
     {
     id: "book_JiaoLvDeRen", 
     date: '2026.09', 
