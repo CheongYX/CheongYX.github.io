@@ -47,6 +47,17 @@ export default function App() {
     return () => window.removeEventListener('popstate', handlePopState);
   }, [lang]);
 
+  // ✨ 新增：动态修改网页标题
+  useEffect(() => {
+    if (selectedItem) {
+      // 提取当前文章的标题 (根据语言选择)
+      const postTitle = typeof selectedItem === 'object' ? selectedItem.title : '文章详情';
+      document.title = `${postTitle} | CYX Digital Garden`; // 网页标签页会变成这个名字！
+    } else {
+      document.title = 'CYX | Digital Garden'; // 回到首页时的默认标题
+    }
+  }, [selectedItem, lang]);
+
   // 3️⃣ 强化版文章拦截器：修改文章时不丢失分类参数
   const handleSetSelectedItem = (item) => {
     setSelectedItem(item);
