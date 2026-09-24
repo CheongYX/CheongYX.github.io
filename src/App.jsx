@@ -47,16 +47,23 @@ export default function App() {
     return () => window.removeEventListener('popstate', handlePopState);
   }, [lang]);
 
-  // ✨ 新增：动态修改网页标题
+// ✨ 升级版：动态且支持双语的网页标题 (用于分享和 SEO)
   useEffect(() => {
+    // 1. 先定义好网站的后缀名
+    const siteSuffix = lang === 'zh' ? 'CYX 数字花园' : 'CYX Digital Garden';
+
     if (selectedItem) {
-      // 提取当前文章的标题 (根据语言选择)
-      const postTitle = typeof selectedItem === 'object' ? selectedItem.title : '文章详情';
-      document.title = `${postTitle} | CYX Digital Garden`; // 网页标签页会变成这个名字！
+      // 2. 提取当前文章的标题
+      // 💡 提示：如果你的 timelineData 里面区分了中英文标题（例如 title_zh 和 title_en），可以在这里动态读取：
+      // const postTitle = lang === 'zh' ? selectedItem.title_zh : selectedItem.title_en;
+      const postTitle = typeof selectedItem === 'object' ? selectedItem.title : (lang === 'zh' ? '文章详情' : 'Post Detail');
+      
+      document.title = `${postTitle} | ${siteSuffix}`; // 组合成：文章名 | CYX 数字花园
     } else {
-      document.title = 'CYX | Digital Garden'; // 回到首页时的默认标题
+      // 3. 回到主页时的标题
+      document.title = siteSuffix; 
     }
-  }, [selectedItem, lang]);
+  }, [selectedItem, lang]); // 👈 关键点：这里监听了 lang，只要你点击切换语言，标题瞬间跟着变！
 
   // 3️⃣ 强化版文章拦截器：修改文章时不丢失分类参数
   const handleSetSelectedItem = (item) => {
