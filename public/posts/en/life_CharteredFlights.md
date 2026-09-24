@@ -1,59 +1,59 @@
-A few days ago, a little something happened in my life that gave me an intense feeling of "folded time."
+A few days ago, I experienced one of those surreal, full-circle moments that completely blur the lines of time.
 
-I was chatting with a guy six years younger than me whom I had just met this month, and he suddenly threw an unexpected question at me: "Were you the one who made that SOP for the chartered flights to China?"
+I was catching up with a friend a few years younger than me, when he suddenly caught me off guard: "Wait, were you the one who built that SOP website for the chartered flights to China?" 
 
-My first reaction was blank confusion. How could you know about that chaotic mess from four years ago? But the few sentences he replied with both cracked me up and stirred an indescribable ripple in my heart.
+I honestly froze. How did a guy his age know about that chaotic mess from four years ago? His next few sentences had me laughing out loud, but also stirred up something incredibly warm inside.
 
 <div align="center">
-  <img src="/images/life/charteredflights/chathistory.jpeg" width="30%" alt="聊天记录">
+  <img src="/images/life/charteredflights/chathistory.jpeg" width="30%" alt="Chat History">
 </div>
 
-It turns out that in his childhood memories, I had already made my debut as the hardcore "neighbor's kid." That classic Malaysian parent phrase, "Look how awesome this person is," acted like a hook spanning four years, instantly yanking me back to the autumn of 2022.
+It turns out, in his childhood memory, I was already the mythical "overachiever" that Asian parents love to talk about. His mom had pointed to my work on Facebook and hit him with the classic Malaysian parent line: *"Look how awesome she is."* That single phrase acted like a time machine, yanking me right back to the autumn of 2022.
 
-At that time, we had been attending a "cloud university" in Malaysia for two whole years. Despite getting accepted into a university in Beijing, our bodies were trapped in our tropical rooms, watching the distant change of seasons through a screen every day. So, when news finally broke that the Ministry of Foreign Affairs of Malaysia and China had coordinated "Malaysia Airlines chartered flights," the international student community completely boiled over.
+At the time, we had been stuck in "Zoom university" for two whole years. Despite being officially enrolled in a Beijing university, our reality was being trapped in our tropical bedrooms, watching the distant seasons change through a screen. So, when the news finally broke that the Malaysian and Chinese governments had coordinated special Malaysia Airlines chartered flights, the international student community went absolutely wild.
 
-But along with the hope came extreme anxiety. The powerlessness of having your fate hang on a single page refresh is genuinely hard to understand if you haven't experienced it.
+But with that hope came suffocating anxiety. If you've never experienced the dread of your entire future hanging on a single browser refresh, it's hard to explain.
 
 <div align="center">
-  <img src="/images/life/charteredflights/email.png" width="50%" alt="等待确认函">
+  <img src="/images/life/charteredflights/email.png" width="50%" alt="Waiting for the confirmation email">
 </div>
 
-During those red-eyed late nights, I obsessively pulled down to refresh my Gmail inbox over and over. I constantly bounced between hope and the disappointment of spam, terrified of missing any official email containing the word "quota."
+During those sleepless nights, I obsessively refreshed my Gmail inbox. Every notification was an emotional rollercoaster between hope and the disappointment of spam. I was terrified of missing that one official email containing the word "quota."
 
-Eventually, I managed to secure an incredibly precious seat on the chartered flight in the second round. At that moment, after the ecstatic relief, I looked at the students around me who were still waiting bitterly and completely lost facing the complex SOPs, and I made a decision that seems a bit "asking for trouble" in hindsight: **I volunteered to be a Student Assistant (SA) for these flights.**
+Eventually, I managed to secure an incredibly precious seat on the second round of flights. Once the sheer relief washed over me, I looked at the hundreds of students still waiting bitterly, completely lost in a maze of complex travel SOPs. That’s when I made a decision that, in hindsight, was a total glutton for punishment: **I volunteered to be a Student Assistant (SA) for the flights.**
 
-Being an SA was absolutely a high-pressure, grueling job. Two or three planes per batch, hundreds of homesick international students, ever-changing pandemic prevention policies, and complicated procedures requiring coordination with the Ministry of Foreign Affairs and Malaysia Airlines... all the information was like a tangled mess.
+Being an SA was a high-pressure, grueling job. We were handling two to three planes per batch, hundreds of homesick students, ever-changing COVID policies, and endless bureaucratic red tape with the ministries and airlines. The information flow was pure chaos. 
 
-To prevent important notices from rotting away in dozens of chaotic WhatsApp groups, I pulled in a good friend (who is also the founder of tootaio, [Xiaomai](https://xiaomai.tootaio.com)). We temporarily teamed up and threw together a "Returning to China Student SOP" webpage. Our setup at the time felt very much like a micro-startup: I was responsible for sorting out the complex business logic and connecting with information resources from the Ministry of Foreign Affairs and the consulate, while he handled the coding to build the framework.
+To stop critical updates from getting buried in dozens of panicked WhatsApp groups, I teamed up with a good friend (who is now the founder of tootaio, <a href="https://xiaomai.tootaio.com" target="_blank">Xiaomai</a>). Operating essentially like a two-person startup, we threw together a "Return to School SOP" webpage. I mapped out the complex logic and verified the official resources, while he wrote the code to bring it to life. 
 
-When people tried to sneak into the WhatsApp groups to fish in troubled waters, kicking them manually was too slow. We even wrote a script to cross-reference group members with the official list, automatically weeding out irrelevant individuals.
+When opportunistic people tried to sneak into our WhatsApp groups, kicking them out manually became impossible. So, we wrote an automation script to cross-reference group members with the official passenger list, weeding out the irrelevant ones instantly.
 
-Our thought process back then was actually incredibly simple and pure: **Since we had been caught in the rain ourselves, and just happened to know a little about how to open an umbrella, we might as well try to open it for everyone.**
+Our philosophy back then was incredibly simple. We weren't trying to be heroes; we had simply navigated the storm ourselves, and we wanted to build order out of chaos when nobody asked us to[cite: 1]. 
 
-But we never expected that the little webpage, originally just meant to solve everyone's pain points, would not only be shared across the web with a red exclamation mark by the Association of Graduates from Universities and Colleges of China, Malaysia, but would also break out of our circle and infiltrate the parents' Facebook social sphere.
+We never expected that our little makeshift website would blow up. It got pinned and blasted out with red exclamation marks by the official Student Association, and eventually made its way into the ultimate echo chamber: Malaysian parents' Facebook feeds.
 
 <div align="center">
-  <img src="/images/life/charteredflights/liuhua.png" width="60%" alt="留华同学会转发">
+  <img src="/images/life/charteredflights/liuhua.png" width="60%" alt="Forwarded by the Association">
 </div>
 
-In a period filled with uncertainty everywhere, what everyone needed was not just a guide, but a sense of "certainty." I have always kept a message shared by the SA chief coordinator in our group back then, and whenever I feel exhausted or doubt myself, I take it out to look at it.
+In an era defined by uncertainty, people didn't just need a guide—they craved a sense of certainty. I still keep a screenshot of a message forwarded by our SA chief coordinator. Whenever I feel burned out or start doubting myself, I look back at it.
 
 <div align="center">
-  <img src="/images/life/charteredflights/support.jpeg" width="60%" alt="超级振奋人心的话">
+  <img src="/images/life/charteredflights/support.jpeg" width="60%" alt="Uplifting message from the group">
 </div>
 
-> **We actually have someone taking care of us, arranging things for us, and caring about us!**
+> **"We actually have someone taking care of us, arranging things for us, and genuinely looking out for us."**
 
-Seeing this sentence genuinely made my eyes tear up. In that massive transnational escort, as an SA, being able to take the peace of mind given to us by the Ministry of Foreign Affairs and steadily pass it on to hundreds of equally anxious peers through my own coordination and structuring—that is probably the coolest and most meaningful thing I did during my university years.
+Reading that made my eyes tear up back then, and it still does now. Through all the massive transnational coordination, being able to take the hard-earned clarity from the Ministry and turn it into peace of mind for hundreds of anxious peers was easily the most meaningful thing I did in college. 
 
-Now, four years have passed. The me who self-deprecatingly said "I don't know that much, I can only provide resources and learn" while making that webpage, has gone through years of trial and error and successfully earned a degree in Artificial Intelligence. Now, I am driving the practical implementation of AI transformation every day, accustomed to writing practical automation tools in Python to solve tedious business pain points, and able to independently run complex algorithm models. In this tech world that I once only dared to look up to, I have slowly put down my own roots.
+It’s been four years since that autumn. Back then, I joked that my only skill was "coordinating resources." Today, armed with a degree in Artificial Intelligence, my daily reality involves driving AI transformation, scripting Python automations, and deploying complex algorithms. I've finally anchored myself in the tech landscape I once only admired from afar.
 
-We often explore the "meaning of action" in psychology or philosophy books, but in reality, **true meaning often comes with a long lag.**
+*We often search for immediate meaning in our actions, but the truth is, the real impact of what we do often takes years to reveal itself.*
 
-A seed you casually plant amidst chaos and confusion, you might think it merely solved a temporary crisis. But one day, four years later, it will suddenly turn into a boomerang, landing back in your hand in the form of a "look how awesome you are" from a younger brother you hardly know. It tells you in an incredibly light and warm way: your casual bravery and drive for action back then truly did shine brightly in some corner of the world.
+What felt like a desperate, makeshift solution during a global crisis turned out to be a seed. Hearing that younger friend praise it years later was a beautiful reminder: when you step up to solve a problem in the dark, the light you create might just keep shining in someone else's memory.
 
-Finally, I'm attaching the letter of appreciation from the Ministry of Foreign Affairs. It's the final footnote to those crazy, anxious, yet shining days. The story has turned a new page, but that instinct to solve problems when they arise and to open an umbrella when you see others caught in the rain has become a permanent part of my life.
+I’m leaving the letter of appreciation from the Ministry of Foreign Affairs here as the final footnote to those crazy, anxious, yet glowing days. The chapter is closed, but that instinct—to never wait for permission to solve the mess in front of you[cite: 1]—has become a permanent part of who I am.
 
 <div align="center">
-  <img src="/images/life/charteredflights/sukalerawan MAS.jpg" width="60%" alt="图片描述">
+  <img src="/images/life/charteredflights/sukalerawan MAS.jpg" width="60%" alt="Letter of Appreciation">
 </div>
