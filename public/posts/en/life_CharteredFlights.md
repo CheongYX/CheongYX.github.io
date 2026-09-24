@@ -52,7 +52,7 @@ It’s been four years since that autumn. Back then, I joked that my only skill 
 
 What felt like a desperate, makeshift solution during a global crisis turned out to be a seed. Hearing that younger friend praise it years later was a beautiful reminder: when you step up to solve a problem in the dark, the light you create might just keep shining in someone else's memory.
 
-I’m leaving the letter of appreciation from the Ministry of Foreign Affairs here as the final footnote to those crazy, anxious, yet glowing days. The chapter is closed, but that instinct—to never wait for permission to solve the mess in front of you[cite: 1]—has become a permanent part of who I am.
+I’m leaving the letter of appreciation from the Ministry of Foreign Affairs here as the final footnote to those crazy, anxious, yet glowing days. The chapter is closed, but that instinct—to never wait for permission to solve the mess in front of you—has become a permanent part of who I am.
 
 <div align="center">
   <img src="/images/life/charteredflights/sukalerawan MAS.jpg" width="60%" alt="Letter of Appreciation">
