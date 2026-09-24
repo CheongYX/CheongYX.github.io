@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Eye, EyeOff, ChevronUp, Share2 } from 'lucide-react'; // ✨ 1. 引入 Share2 图标
+import { Eye, EyeOff, ChevronUp, Share2 } from 'lucide-react'; 
 
 export default function Controls({ lang, setLang, isEyeCareMode, setIsEyeCareMode }) {
   const [showTopBtn, setShowTopBtn] = useState(false);
@@ -12,10 +12,22 @@ export default function Controls({ lang, setLang, isEyeCareMode, setIsEyeCareMod
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // ✨ 2. 新增：智能分享逻辑 (自动抓取当前网址和标题)
+  // ✨ 2. 新增：终极智能分享逻辑 (带剪贴板双保险)
   const handleShare = async () => {
     const currentUrl = window.location.href; 
     const pageTitle = document.title; 
+    
+    // 准备好要分享的完整文案（标题 + 换行 + 网址）
+    const shareText = lang === 'zh' 
+      ? `来看看这篇文章：${pageTitle} \n${currentUrl}` 
+      : `Check out this post: ${pageTitle} \n${currentUrl}`;
+
+    // 💡 破解秘籍：无论支不支持原生分享，先强制把这段带标题的文字塞进剪贴板！
+    try {
+      await navigator.clipboard.writeText(shareText);
+    } catch (err) {
+      console.log('剪贴板写入失败', err);
+    }
 
     if (navigator.share) {
       try {
@@ -28,13 +40,8 @@ export default function Controls({ lang, setLang, isEyeCareMode, setIsEyeCareMod
         console.log('分享已取消或失败', error);
       }
     } else {
-      // 电脑端降级为复制链接
-      try {
-        await navigator.clipboard.writeText(currentUrl);
-        alert(lang === 'zh' ? '✅ 专属链接已复制！快去粘贴发给微信朋友吧。' : '✅ Link copied to clipboard!');
-      } catch (err) {
-        alert(lang === 'zh' ? '复制失败，请手动复制网址。' : 'Failed to copy URL.');
-      }
+      // 电脑端降级提示
+      alert(lang === 'zh' ? '✅ 专属链接与标题已复制！快去粘贴发给朋友吧。' : '✅ Link & Title copied to clipboard!');
     }
   };
 
@@ -51,7 +58,7 @@ export default function Controls({ lang, setLang, isEyeCareMode, setIsEyeCareMod
         </button>
       )}
 
-      {/* ✨ 3. 新增：分享按钮 */}
+      {/* ✨ 3. 分享按钮 */}
       <button 
         onClick={handleShare} 
         className="w-12 h-12 rounded-full flex items-center justify-center shadow-lg bg-white/80 backdrop-blur-md border border-slate-200 text-slate-500 hover:text-indigo-600 hover:scale-110 transition-all"
