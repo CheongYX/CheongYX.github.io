@@ -1,5 +1,14 @@
 export const getTimelineData = (lang) => [
   {
+    id: "book_BianGeZhongDeZhongGuoZhiLi", 
+    date: '2026.11', 
+    title: lang === 'zh' ? '课外阅读：《变革中的中国治理：2011—2021》' : 'Reading: China\'s Governance in Change: 2011–2021',
+    category: 'reading', 
+    layout: 'tabs', 
+    description: lang === 'zh' ? '《变革中的中国治理：2011—2021》-[马来西亚] 沈联涛、肖耿。历史并非线性的机械运动，而是充满能量与热力学约束的复杂系统。从微观博弈到宏观治理，真正的洞察往往需要跳出抽象的共识幻觉，去直面物理现实与结构底线。' : '"China\'s Governance in Change: 2011–2021" by Andrew Sheng and Alvin Eng Hock Seng. History is not a linear mechanical movement, but a complex system bound by energy and thermodynamic constraints. True insight requires looking past abstract consensus illusions to confront physical realities and structural baselines.',
+    tags: ['Economics', 'System Dynamics']
+  },
+  {
     id: "life_CharteredFlights", 
     date: '2026.09', 
     title: lang === 'zh' ? '2022留华包机：四年后正中眉心的“回旋镖”' : 'The 2022 Chartered Flights: A "Boomerang" Four Years Later',
