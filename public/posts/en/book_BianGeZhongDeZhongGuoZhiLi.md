@@ -76,9 +76,9 @@ The establishment of integrated logistics networks, cloud infrastructure, and cr
 
 Translated into the formal lexicon of game theory, this dynamic exemplifies sophisticated mechanism design, transmuting a high-stakes monetary contest into a positive-sum commercial exchange. Within conventional trade configurations, high logistical friction and currency conversion costs confined participants to suboptimal equilibria. By introducing institutional interventions—such as optimized logistics, streamlined digital onboarding, and integrated payment mechanisms—platforms alter incentive structures, driving the system toward superior collaborative equilibria. Formally modeled via multi-agent reinforcement learning paradigms, this transition is captured as follows:
 
-![](/images/books_cover/biangezhongdezhongguo/biangezhongdezhongguo_nash (2).jpeg)
+![Nash_EN](/images/books_cover/biangezhongdezhongguo/biangezhongdezhongguo_nash (2).jpeg)
 
-```PlainText
+```Text
 Algorithm: MARL Evolutionary Algorithm for Reshaping Payment Equilibrium
 Input: Set of Malaysian consumers C (size N), Chinese cross-border e-commerce platform P, learning rate α, discount factor γ, maximum initial subsidy Δ_max, network effect coefficient ω, exploration rate ε
 Output: Locked-in new Nash equilibrium strategy (A_c* = 1, A_p* = 1)
